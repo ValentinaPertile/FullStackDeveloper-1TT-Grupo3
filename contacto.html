@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Mueblería Hermanos Jota</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- Header común con navegación y carrito -->
+    <header class="header">
+        <div class="logo">
+            <a href="index.html">Hermanos Jota</a>
+        </div>
+        <nav class="nav">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="productos.html">Productos</a></li>
+                <li><a href="contacto.html" class="active">Contacto</a></li>
+            </ul>
+        </nav>
+        <div class="carrito">
+            <a href="#" id="cart-link">🛒 Carrito (<span id="cart-count">0</span>)</a>
+        </div>
+    </header>
+
+    <!-- Contenido principal de la página de contacto -->
+    <main class="contacto-main">
+        <section class="contacto-seccion">
+            <h1>Contacto</h1>
+            <p>Dejanos tu consulta y te responderemos a la brevedad.</p>
+
+            <!-- Formulario de contacto -->
+            <form id="form-contacto" novalidate>
+                <!-- Campo Nombre -->
+                <div class="campo">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" placeholder="Tu nombre completo">
+                    <span class="error" id="error-nombre"></span>
+                </div>
+
+                <!-- Campo Email -->
+                <div class="campo">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="tuemail@ejemplo.com">
+                    <span class="error" id="error-email"></span>
+                </div>
+
+                <!-- Campo Mensaje -->
+                <div class="campo">
+                    <label for="mensaje">Mensaje:</label>
+                    <textarea id="mensaje" name="mensaje" rows="5" placeholder="Escribí tu mensaje aquí..."></textarea>
+                    <span class="error" id="error-mensaje"></span>
+                </div>
+
+                <!-- Botón de envío -->
+                <button type="submit" id="btn-enviar">Enviar Mensaje</button>
+            </form>
+
+            <!-- Contenedor para mostrar mensaje de éxito o feedback -->
+            <div id="mensaje-exito" class="mensaje-exito"></div>
+        </section>
+    </main>
+
+    <!-- Footer básico -->
+    <footer class="footer">
+        <p>&copy; 2026 Mueblería Hermanos Jota. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Script de lógica de contacto -->
+    <script src="js/contacto.js"></script>
+</body>
+</html>
