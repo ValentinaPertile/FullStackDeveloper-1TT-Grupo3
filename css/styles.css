@@ -1,6 +1,6 @@
 /* ==========================================================================
-   ESTILOS GENERALES Y PÁGINA DE CONTACTO - MUEBLERÍA HERMANOS JOTA
-   Mobile First | Flexbox | Responsivo
+   ESTILOS GLOBALES - MUEBLERÍA HERMANOS JOTA
+   Contiene: Reset, Tipografía base, Header común y Footer común
    ========================================================================== */
 
 /* 1. Reset básico y tipografía */
@@ -11,10 +11,10 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #fdfbf7; /* Fondo cálido suave */
-    color: #333333;
-    line-height: 1.6;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f7f5f2;
+    color: #222222;
+    line-height: 1.5;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -32,191 +32,68 @@ ul {
 /* 2. Header y Navegación (Flexbox) */
 .header {
     background-color: #ffffff;
-    border-bottom: 1px solid #e5dfd5;
-    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #ddd;
+    padding: 15px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
+    gap: 10px;
 }
 
 .logo a {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: bold;
-    color: #5c3a21; /* Tono madera */
-    letter-spacing: 0.5px;
+    color: #4a2c11;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .nav ul {
     display: flex;
-    gap: 1.25rem;
+    gap: 20px;
 }
 
 .nav a {
     font-size: 0.95rem;
-    color: #666666;
+    color: #555555;
     font-weight: 500;
-    transition: color 0.2s ease;
 }
 
 .nav a:hover,
 .nav a.active {
-    color: #5c3a21;
+    color: #4a2c11;
     font-weight: bold;
+    border-bottom: 2px solid #4a2c11;
 }
 
 .carrito a {
     font-size: 0.9rem;
-    background-color: #f2ede4;
-    padding: 0.4rem 0.8rem;
-    border-radius: 20px;
-    font-weight: 600;
-    color: #5c3a21;
+    color: #4a2c11;
+    font-weight: bold;
+    border: 1px solid #4a2c11;
+    padding: 4px 10px;
 }
 
-/* 3. Contenido Principal y Formulario de Contacto (Mobile First) */
-.contacto-main {
-    flex: 1;
-    padding: 2rem 1rem;
-    display: flex;
-    justify-content: center;
-}
-
-.contacto-seccion {
-    background-color: #ffffff;
-    border: 1px solid #e8e2d8;
-    border-radius: 8px;
-    padding: 1.75rem;
-    width: 100%;
-    max-width: 540px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-}
-
-.contacto-seccion h1 {
-    font-size: 1.75rem;
-    color: #5c3a21;
-    margin-bottom: 0.5rem;
-}
-
-.contacto-seccion p {
-    color: #666666;
-    font-size: 0.95rem;
-    margin-bottom: 1.5rem;
-}
-
-/* Campos del formulario con Flexbox */
-#form-contacto {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-}
-
-.campo {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-}
-
-.campo label {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #444444;
-}
-
-.campo input,
-.campo textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #cccccc;
-    border-radius: 6px;
-    font-size: 0.95rem;
-    font-family: inherit;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.campo input:focus,
-.campo textarea:focus {
-    outline: none;
-    border-color: #5c3a21;
-    box-shadow: 0 0 0 3px rgba(92, 58, 33, 0.15);
-}
-
-.campo textarea {
-    resize: vertical;
-}
-
-/* Estilos de validación / Errores */
-.campo.invalido input,
-.campo.invalido textarea {
-    border-color: #d32f2f;
-    background-color: #fff8f8;
-}
-
-.error {
-    color: #d32f2f;
-    font-size: 0.8rem;
-    font-weight: 500;
-    min-height: 1rem;
-}
-
-/* Botón de envío */
-#btn-enviar {
-    background-color: #5c3a21;
+.carrito a:hover {
+    background-color: #4a2c11;
     color: #ffffff;
-    border: none;
-    padding: 0.85rem;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-#btn-enviar:hover {
-    background-color: #432915;
-}
-
-#btn-enviar:active {
-    transform: scale(0.99);
-}
-
-/* Mensaje de éxito renderizado vía DOM */
-.mensaje-exito {
-    margin-top: 1.25rem;
-}
-
-.mensaje-exito.visible {
-    background-color: #eef7ee;
-    border: 1px solid #4caf50;
-    color: #2e7d32;
-    padding: 1rem;
-    border-radius: 6px;
-    font-size: 0.95rem;
-}
-
-/* 4. Footer */
+/* 3. Footer común */
 .footer {
-    background-color: #3e2716;
-    color: #e5dfd5;
+    background-color: #2b1a0c;
+    color: #cccccc;
     text-align: center;
-    padding: 1.25rem;
+    padding: 15px;
     font-size: 0.85rem;
     margin-top: auto;
 }
 
-/* 5. Responsividad para pantallas medianas y grandes (Desktop) */
+/* 4. Header responsivo en Desktop (>= 768px) */
 @media (min-width: 768px) {
     .header {
         flex-direction: row;
         justify-content: space-between;
-        padding: 1.25rem 3rem;
-    }
-
-    .contacto-main {
-        padding: 3.5rem 1rem;
-    }
-
-    .contacto-seccion {
-        padding: 2.25rem;
+        padding: 15px 40px;
     }
 }

@@ -1,0 +1,130 @@
+/* ==========================================================================
+   ESTILOS EXCLUSIVOS: PÁGINA DE CONTACTO - MUEBLERÍA HERMANOS JOTA
+   Mobile First | Flexbox | Validación visual
+   ========================================================================== */
+
+/* 1. Contenedor principal de contacto (Mobile First) */
+.contacto-main {
+    flex: 1;
+    padding: 30px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.contacto-seccion {
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+    padding: 25px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.contacto-seccion h1 {
+    font-size: 1.6rem;
+    color: #4a2c11;
+    margin-bottom: 8px;
+}
+
+.contacto-seccion p {
+    color: #555555;
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+}
+
+/* 2. Formulario y Campos (Flexbox) */
+#form-contacto {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.campo label {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #333333;
+}
+
+.campo input,
+.campo textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #b5b5b5;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background-color: #fafafa;
+}
+
+.campo input:focus,
+.campo textarea:focus {
+    outline: none;
+    border-color: #4a2c11;
+    background-color: #ffffff;
+}
+
+.campo textarea {
+    resize: vertical;
+}
+
+/* 3. Estados de Validación: Error (Rojo) */
+.campo.invalido input,
+.campo.invalido textarea {
+    border: 1px solid #cc0000;
+    background-color: #fff3f3;
+}
+
+.error {
+    color: #cc0000;
+    font-size: 0.85rem;
+    display: block;
+    min-height: 16px;
+}
+
+/* 4. Botón de envío */
+#btn-enviar {
+    background-color: #4a2c11;
+    color: #ffffff;
+    border: none;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#btn-enviar:hover {
+    background-color: #2e1b0b;
+}
+
+/* 5. Estados de Validación: Éxito (Verde) */
+.mensaje-exito {
+    display: none;
+    margin-top: 15px;
+    padding: 12px 15px;
+    background-color: #e8f5e9;
+    border: 1px solid #2e7d32;
+    color: #1b5e20;
+    font-size: 0.95rem;
+}
+
+.mensaje-exito.visible {
+    display: block;
+}
+
+/* 6. Responsividad en Desktop (>= 768px) */
+@media (min-width: 768px) {
+    .contacto-main {
+        padding: 50px 20px;
+    }
+
+    .contacto-seccion {
+        padding: 35px;
+    }
+}
