@@ -29,34 +29,44 @@ ul {
     list-style: none;
 }
 
-/* 2. Header y Navegación (Flexbox) */
+/* 2. Header y Navegación (Mobile First) */
 .header {
     background-color: #ffffff;
-    border-bottom: 1px solid #ddd;
-    padding: 15px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 14px 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    width: 100%;
 }
 
 .logo a {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     font-weight: bold;
     color: #4a2c11;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+    display: block;
+    text-align: center;
+}
+
+.nav {
+    width: 100%;
 }
 
 .nav ul {
     display: flex;
-    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
 }
 
 .nav a {
     font-size: 0.95rem;
     color: #555555;
     font-weight: 500;
+    padding: 4px 2px;
 }
 
 .nav a:hover,
@@ -67,11 +77,13 @@ ul {
 }
 
 .carrito a {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #4a2c11;
     font-weight: bold;
     border: 1px solid #4a2c11;
-    padding: 4px 10px;
+    padding: 6px 12px;
+    display: inline-block;
+    background-color: #ffffff;
 }
 
 .carrito a:hover {
@@ -84,16 +96,29 @@ ul {
     background-color: #2b1a0c;
     color: #cccccc;
     text-align: center;
-    padding: 15px;
+    padding: 18px 16px;
     font-size: 0.85rem;
     margin-top: auto;
+    line-height: 1.4;
 }
 
-/* 4. Header responsivo en Desktop (>= 768px) */
+/* 4. Desktop (>= 768px) */
 @media (min-width: 768px) {
     .header {
         flex-direction: row;
         justify-content: space-between;
-        padding: 15px 40px;
+        padding: 16px 40px;
+    }
+
+    .nav {
+        width: auto;
+    }
+
+    .nav ul {
+        gap: 25px;
+    }
+
+    .logo a {
+        font-size: 1.35rem;
     }
 }

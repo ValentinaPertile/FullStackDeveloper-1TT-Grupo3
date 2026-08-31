@@ -6,43 +6,47 @@
 /* 1. Contenedor principal de contacto (Mobile First) */
 .contacto-main {
     flex: 1;
-    padding: 30px 15px;
+    padding: 20px 12px;
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    width: 100%;
 }
 
 .contacto-seccion {
     background-color: #ffffff;
     border: 1px solid #dcdcdc;
-    padding: 25px;
+    padding: 20px 15px;
     width: 100%;
     max-width: 500px;
+    box-sizing: border-box;
 }
 
 .contacto-seccion h1 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     color: #4a2c11;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .contacto-seccion p {
     color: #555555;
     font-size: 0.95rem;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 /* 2. Formulario y Campos (Flexbox) */
 #form-contacto {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 16px;
+    width: 100%;
 }
 
 .campo {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 6px;
+    width: 100%;
 }
 
 .campo label {
@@ -54,11 +58,14 @@
 .campo input,
 .campo textarea {
     width: 100%;
-    padding: 10px;
+    padding: 12px 10px;
     border: 1px solid #b5b5b5;
-    font-size: 0.95rem;
+    font-size: 16px; /* 16px evita el zoom automatico indeseado en celulares */
     font-family: inherit;
     background-color: #fafafa;
+    border-radius: 0;
+    -webkit-appearance: none;
+    box-sizing: border-box;
 }
 
 .campo input:focus,
@@ -70,6 +77,7 @@
 
 .campo textarea {
     resize: vertical;
+    min-height: 110px;
 }
 
 /* 3. Estados de Validación: Error (Rojo) */
@@ -83,7 +91,8 @@
     color: #cc0000;
     font-size: 0.85rem;
     display: block;
-    min-height: 16px;
+    min-height: 18px;
+    line-height: 1.3;
 }
 
 /* 4. Botón de envío */
@@ -91,12 +100,16 @@
     background-color: #4a2c11;
     color: #ffffff;
     border: none;
-    padding: 12px;
+    padding: 14px;
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    width: 100%;
+    border-radius: 0;
+    -webkit-appearance: none;
+    box-sizing: border-box;
 }
 
 #btn-enviar:hover {
@@ -106,12 +119,13 @@
 /* 5. Estados de Validación: Éxito (Verde) */
 .mensaje-exito {
     display: none;
-    margin-top: 15px;
-    padding: 12px 15px;
+    margin-top: 18px;
+    padding: 14px 16px;
     background-color: #e8f5e9;
     border: 1px solid #2e7d32;
     color: #1b5e20;
     font-size: 0.95rem;
+    line-height: 1.4;
 }
 
 .mensaje-exito.visible {
@@ -125,6 +139,10 @@
     }
 
     .contacto-seccion {
-        padding: 35px;
+        padding: 35px 30px;
+    }
+
+    .contacto-seccion h1 {
+        font-size: 1.8rem;
     }
 }
