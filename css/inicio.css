@@ -1,0 +1,59 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body { 
+    font-family: 'Arial', sans-serif;
+    background-color: #fdfbf7;
+    color: #333;
+}
+
+/* hero banner */
+
+.hero-banner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    min-height: 60vh;
+    background-color: #d7ccc8;
+    padding: 20px;
+}
+
+.hero-banner h1 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: #4e342e;
+}
+
+/* 3. mobile first design */
+
+.productos-destacados {
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.grilla-productos {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+/* 4. tablet design */
+
+@media (min-width: 768px) {
+    .grilla-productos {
+        flex-direction: row;
+        
+        justify-content: space-around;
+    }
+
+    .producto {
+        width: calc(50% - 20px);
+    }
+}
