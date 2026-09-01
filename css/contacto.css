@@ -1,148 +1,249 @@
 /* ==========================================================================
-   ESTILOS EXCLUSIVOS: PÁGINA DE CONTACTO - MUEBLERÍA HERMANOS JOTA
-   Mobile First | Flexbox | Validación visual
+   ESTILOS DE PÁGINA DE CONTACTO - HERMANOS JOTA
+   Armonizados con la paleta y componentes de diseño global
    ========================================================================== */
 
-/* 1. Contenedor principal de contacto (Mobile First) */
-.contacto-main {
-    flex: 1;
-    padding: 20px 12px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    width: 100%;
+/* -------------------- Utilidad de Accesibilidad -------------------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-.contacto-seccion {
-    background-color: #ffffff;
-    border: 1px solid #dcdcdc;
-    padding: 20px 15px;
-    width: 100%;
-    max-width: 500px;
-    box-sizing: border-box;
+/* -------------------- Enlace activo en navegación -------------------- */
+.main-nav a.active {
+  color: var(--siena);
+  border-bottom-color: var(--oro);
 }
 
-.contacto-seccion h1 {
-    font-size: 1.5rem;
-    color: #4a2c11;
-    margin-bottom: 6px;
+/* -------------------- Página de Contacto -------------------- */
+.contacto-page {
+  padding-block: 64px 88px;
+  background: var(--superficie);
 }
 
-.contacto-seccion p {
-    color: #555555;
-    font-size: 0.95rem;
-    margin-bottom: 18px;
+.contacto-intro {
+  max-width: 760px;
+  margin-bottom: 48px;
 }
 
-/* 2. Formulario y Campos (Flexbox) */
+.contacto-intro .section-title {
+  margin-bottom: 16px;
+}
+
+.contacto-intro__lead {
+  font-size: 1.08rem;
+  color: var(--tinta-suave);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* -------------------- Layout Principal (Grid / Flexbox) -------------------- */
+.contacto-layout {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* -------------------- Tarjeta de Formulario -------------------- */
+.contacto-card {
+  background: #ffffff;
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 36px 32px;
+  box-shadow: 0 4px 20px rgba(54, 36, 24, 0.03);
+}
+
 #form-contacto {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
 }
 
 .campo {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
 }
 
 .campo label {
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: #333333;
+  font-family: var(--fuente-cuerpo);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--tinta);
 }
 
 .campo input,
 .campo textarea {
-    width: 100%;
-    padding: 12px 10px;
-    border: 1px solid #b5b5b5;
-    font-size: 16px; /* 16px evita el zoom automatico indeseado en celulares */
-    font-family: inherit;
-    background-color: #fafafa;
-    border-radius: 0;
-    -webkit-appearance: none;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 12px 14px;
+  font-family: var(--fuente-cuerpo);
+  font-size: 0.96rem;
+  color: var(--tinta);
+  background-color: var(--superficie);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.campo input::placeholder,
+.campo textarea::placeholder {
+  color: #9c8a7c;
+  opacity: 0.8;
 }
 
 .campo input:focus,
 .campo textarea:focus {
-    outline: none;
-    border-color: #4a2c11;
-    background-color: #ffffff;
+  outline: none;
+  background-color: #ffffff;
+  border-color: var(--siena);
+  box-shadow: 0 0 0 3px rgba(212, 164, 55, 0.25);
 }
 
 .campo textarea {
-    resize: vertical;
-    min-height: 110px;
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.5;
 }
 
-/* 3. Estados de Validación: Error (Rojo) */
+/* -------------------- Validación: Estados de Error -------------------- */
 .campo.invalido input,
 .campo.invalido textarea {
-    border: 1px solid #cc0000;
-    background-color: #fff3f3;
+  border-color: var(--rosa);
+  background-color: #fff9f8;
+  box-shadow: 0 0 0 2px rgba(196, 122, 109, 0.25);
 }
 
 .error {
-    color: #cc0000;
-    font-size: 0.85rem;
-    display: block;
-    min-height: 18px;
-    line-height: 1.3;
+  color: #a33225;
+  font-size: 0.82rem;
+  font-weight: 500;
+  min-height: 18px;
+  display: block;
+  line-height: 1.3;
 }
 
-/* 4. Botón de envío */
-#btn-enviar {
-    background-color: #4a2c11;
-    color: #ffffff;
-    border: none;
-    padding: 14px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    width: 100%;
-    border-radius: 0;
-    -webkit-appearance: none;
-    box-sizing: border-box;
+/* -------------------- Botón de Envío -------------------- */
+.btn--submit {
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  margin-top: 8px;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-align: center;
 }
 
-#btn-enviar:hover {
-    background-color: #2e1b0b;
-}
-
-/* 5. Estados de Validación: Éxito (Verde) */
+/* -------------------- Validación: Feedback de Éxito -------------------- */
 .mensaje-exito {
-    display: none;
-    margin-top: 18px;
-    padding: 14px 16px;
-    background-color: #e8f5e9;
-    border: 1px solid #2e7d32;
-    color: #1b5e20;
-    font-size: 0.95rem;
-    line-height: 1.4;
+  display: none;
+  margin-top: 20px;
+  padding: 16px 20px;
+  background-color: #f1f6ed;
+  border: 1px solid var(--sage);
+  color: #2b4f1b;
+  border-radius: var(--radio);
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 .mensaje-exito.visible {
-    display: block;
+  display: block;
+  animation: fadeIn 0.3s ease forwards;
 }
 
-/* 6. Responsividad en Desktop (>= 768px) */
-@media (min-width: 768px) {
-    .contacto-main {
-        padding: 50px 20px;
-    }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-    .contacto-seccion {
-        padding: 35px 30px;
-    }
+/* -------------------- Información Complementaria (Aside) -------------------- */
+.contacto-info {
+  background: var(--alabastro);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
 
-    .contacto-seccion h1 {
-        font-size: 1.8rem;
-    }
+.contacto-info__title {
+  font-family: var(--fuente-display);
+  font-weight: 700;
+  font-size: 1.18rem;
+  color: var(--siena);
+  margin: 0 0 10px;
+}
+
+.contacto-info__item p,
+.contacto-info__item address {
+  font-style: normal;
+  font-size: 0.92rem;
+  color: var(--tinta-suave);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.contacto-info__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.contacto-info__list li {
+  font-size: 0.92rem;
+  color: var(--tinta-suave);
+}
+
+.contacto-info__list a {
+  color: var(--tinta);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.contacto-info__list a:hover,
+.contacto-info__list a:focus-visible {
+  color: var(--siena);
+  border-color: var(--siena);
+}
+
+/* -------------------- Responsive -------------------- */
+@media (max-width: 860px) {
+  .contacto-layout {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .contacto-page {
+    padding-block: 48px 64px;
+  }
+}
+
+@media (max-width: 560px) {
+  .contacto-card,
+  .contacto-info {
+    padding: 24px 20px;
+  }
 }
