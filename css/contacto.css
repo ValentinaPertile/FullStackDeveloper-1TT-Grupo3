@@ -1,9 +1,8 @@
 /* ==========================================================================
-   ESTILOS DE PÁGINA DE CONTACTO - HERMANOS JOTA
-   Armonizados con la paleta y componentes de diseño global
+   Contacto - Hermanos Jota
    ========================================================================== */
 
-/* -------------------- Utilidad de Accesibilidad -------------------- */
+/* Accesibilidad */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -16,13 +15,13 @@
   border: 0;
 }
 
-/* -------------------- Enlace activo en navegación -------------------- */
+/* Navegación */
 .main-nav a.active {
   color: var(--siena);
   border-bottom-color: var(--oro);
 }
 
-/* -------------------- Página de Contacto -------------------- */
+/* Layout */
 .contacto-page {
   padding-block: 64px 88px;
   background: var(--superficie);
@@ -44,7 +43,6 @@
   margin: 0;
 }
 
-/* -------------------- Layout Principal (Grid / Flexbox) -------------------- */
 .contacto-layout {
   display: grid;
   grid-template-columns: 1.35fr 1fr;
@@ -52,7 +50,7 @@
   align-items: start;
 }
 
-/* -------------------- Tarjeta de Formulario -------------------- */
+/* Formulario */
 .contacto-card {
   background: #ffffff;
   border: 1px solid var(--borde);
@@ -118,7 +116,7 @@
   line-height: 1.5;
 }
 
-/* -------------------- Validación: Estados de Error -------------------- */
+/* Validación */
 .campo.invalido input,
 .campo.invalido textarea {
   border-color: var(--rosa);
@@ -135,7 +133,6 @@
   line-height: 1.3;
 }
 
-/* -------------------- Botón de Envío -------------------- */
 .btn--submit {
   width: 100%;
   border: none;
@@ -146,7 +143,6 @@
   text-align: center;
 }
 
-/* -------------------- Validación: Feedback de Éxito -------------------- */
 .mensaje-exito {
   display: none;
   margin-top: 20px;
@@ -175,7 +171,7 @@
   }
 }
 
-/* -------------------- Información Complementaria (Aside) -------------------- */
+/* Información de contacto */
 .contacto-info {
   background: var(--alabastro);
   border: 1px solid var(--borde);
@@ -229,7 +225,7 @@
   border-color: var(--siena);
 }
 
-/* -------------------- Responsive -------------------- */
+/* Responsive */
 @media (max-width: 860px) {
   .contacto-layout {
     grid-template-columns: 1fr;
