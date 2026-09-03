@@ -151,6 +151,28 @@
   color: #fff;
 }
 
+.btn-comprar {
+  flex: 1;
+  padding: 0.65rem;
+  background-color: var(--rosa);
+  color: #fff;
+  font-family: var(--fuente-cuerpo);
+  font-weight: 500;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border: 2px solid var(--rosa);
+  border-radius: var(--radio);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.btn-comprar:hover {
+  opacity: 0.85;
+}
+
 /* -------------------- Responsive -------------------- */
 @media (min-width: 900px) {
   .carrito-item-img {

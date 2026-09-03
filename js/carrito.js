@@ -105,6 +105,7 @@ function renderizarCarrito() {
       </div>
       <div class="carrito-acciones">
         <button id="btn-vaciar-carrito" class="btn-vaciar">Vaciar Carrito</button>
+        <button id="btn-comprar-carrito" class="btn-comprar">Comprar</button>
       </div>
     </div>
   `;
@@ -120,6 +121,16 @@ function renderizarCarrito() {
   const btnVaciar = document.getElementById("btn-vaciar-carrito");
   if (btnVaciar) {
     btnVaciar.addEventListener("click", () => {
+      vaciarCarrito();
+      renderizarCarrito();
+    });
+  }
+
+  const btnComprar = document.getElementById("btn-comprar-carrito");
+  if (btnComprar) {
+    btnComprar.addEventListener("click", () => {
+      const total = calcularTotal();
+      alert(`¡Gracias por tu compra! Total: ${formatearPrecio(total)}`);
       vaciarCarrito();
       renderizarCarrito();
     });
