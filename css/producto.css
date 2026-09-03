@@ -1,0 +1,130 @@
+.page-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+}
+
+.product-container {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  width: 100%;
+}
+
+.main-image-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  width: 100%;
+}
+
+.product-main-img {
+  width: 100%;
+  height: auto;
+  max-height: 520px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.08));
+}
+
+.product-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+  margin-bottom: 6px;
+}
+
+.product-tagline {
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--text-light);
+  margin-bottom: 24px;
+}
+
+/* Price Row */
+.price-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.current-price {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  letter-spacing: -0.5px;
+}
+
+.product-description {
+  font-size: 0.925rem;
+  color: var(--text-body);
+  line-height: 1.65;
+  margin-bottom: 28px;
+}
+
+.specs-card {
+  background-color: var(--bg-specs);
+  border-radius: var(--radius-lg);
+  padding-top: 24px;
+  margin-bottom: 28px;
+}
+
+.specs-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text-light);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.specs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px 16px;
+}
+
+.spec-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.spec-label {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.spec-value {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-top: 4px;
+}
+
+@media (min-width: 900px) {
+  .product-container {
+    flex-direction: row;
+    gap: 56px;
+    align-items: flex-start;
+  }
+
+  .specs-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .main-image-card,
+  .product-info {
+    flex: 1;
+  }
+}
