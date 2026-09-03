@@ -9,21 +9,30 @@ async function mostrarProductos() {
   if (!contenedor) return;
 
   try {
-    const response = await fetch(API_URL);
-    if (!response.ok) {
-      throw new Error(
-        `Error en la petición: ${response.status} ${response.statusText}`,
-      );
+    let producto = null;
+
+    if (!Number.isFinite(id)) {
+      throw new Error("ID inválido");
     }
 
-    const productos = await response.json();
+    const response = await fetch(`${API_URL}/${id}`);
+
+    if (!response.ok && response.status === 404) {
+      contenedor.innerHTML = `
+        <div style="text-align: center; padding: 60px 20px;">
+          <h2>Producto no encontrado</h2>
+          <p>No se encontró información para el producto especificado.</p>
+          <a href="index.html" style="display: inline-block; width: auto; margin-top: 20px; text-decoration: none; color: white; background-color: black; padding: 8px 18px; border-radius: 999px; font-weight: bold">Volver al catálogo</a>
+        </div>
+      `;
+      return;
+    }
+
+    producto = await response.json();
+
     console.log("ID solicitado:", id);
-    console.log("Productos obtenidos:", productos);
-
-    const producto =
-      productos.find((p) => p.id == id) || (isNaN(id) ? productos[0] : null);
-
     console.log("Producto obtenido:", producto);
+
     if (!producto) {
       contenedor.innerHTML = `
         <div style="text-align: center; padding: 60px 20px;">
@@ -35,9 +44,7 @@ async function mostrarProductos() {
       return;
     }
 
-    const materialList =
-      producto.materiales.length > 0 &&
-      producto.materiales.map((material) => material);
+    const materialList = (producto.materiales ?? []).join(", ");
 
     const ancho = producto.medidas ? producto.medidas.ancho || "-" : "-";
     const profundidad = producto.medidas
@@ -76,16 +83,19 @@ async function mostrarProductos() {
              <div class="spec-label">Material</div>
              <div class="spec-value">${materialList}</div>
              </div>
-            `}
+            `
+            }
 
             ${Object.entries(producto.especificaciones || {})
-                .map(([key, value]) => `
+              .map(
+                ([key, value]) => `
                 <div class="spec-item">
                     <div class="spec-label">${key.charAt(0).toUpperCase() + key.slice(1)}</div>
                     <div class="spec-value">${value}</div>
                 </div>
                 `,
-                ).join("")}
+              )
+              .join("")}
               <div class="spec-item">
                 <div class="spec-label">Largo / Ancho</div>
                 <div class="spec-value">${ancho} cm</div>
@@ -110,9 +120,9 @@ async function mostrarProductos() {
   } catch (error) {
     console.error("Error al cargar los productos:", error);
     contenedor.innerHTML = `
-      <div class="product-container" style="text-align: center; padding: 60px 20px;">
+      <div style="text-align: center; padding: 60px 20px;">
         <h2>Error de conexión</h2>
-        <p>No se pudo obtener la información de los productos. Por favor verifica que el servidor esté activo (<code>npm start</code> en el puerto 3000).</p>
+        <p>No se pudo obtener la información de los productos.</p>
       </div>
     `;
   }
