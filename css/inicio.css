@@ -171,7 +171,7 @@ body {
     background-color: #8B4513;
 }
 
-/* --- 3. media queries --- */
+/* --- 3. media queries (Tablet/Desktop) --- */
 @media (min-width: 768px) {
     .hero-banner {
         flex-direction: row;
@@ -196,5 +196,29 @@ body {
     .grilla-productos {
         flex-direction: row;
         justify-content: center;
+    }
+}
+
+/* --- 4. media queries (celulares) --- */
+@media (max-width: 767px) {
+    .hero-banner {
+        width: 100%;
+        box-sizing: border-box; 
+        padding: 40px 20px; 
+        overflow-x: hidden;
+    }
+    
+    .hero-texto h1 {
+        font-size: 2rem; 
+        word-wrap: break-word; 
+    }
+    
+    .hero-texto p {
+        max-width: 100%;
+    }
+    
+    .hero-imagen img {
+        max-width: 100%;
+        height: auto;
     }
 }
