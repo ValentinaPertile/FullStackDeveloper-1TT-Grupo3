@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es-AR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hermanos Jota — Muebles que alimentan el alma</title>
   <meta name="description" content="Hermanos Jota: mobiliario artesanal en maderas certificadas FSC®, hecho en Buenos Aires. Catálogo de living, comedor, dormitorio y oficina.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+  <a class="skip-link" href="#catalogo">Ver catálogo</a>
 
   <a class="skip-link" href="#filosofia">Saltar al contenido</a>
 
@@ -31,11 +32,10 @@
   </header>
 
   <main id="inicio">
-
-    <section class="hero" aria-labelledby="hero-titulo">
-      <div class="wrap hero__inner">
+    <section class="hero-banner" aria-labelledby="hero-titulo">
+      <div class="hero-texto">
         <p class="eyebrow">Taller de mobiliario · Buenos Aires</p>
-        <h1 id="hero-titulo">El redescubrimiento de un&nbsp;arte olvidado.</h1>
+        <h1 id="hero-titulo">El redescubrimiento de un arte olvidado.</h1>
         <p class="hero__lead">
           Creamos muebles que no solo sirven una función, sino que alimentan el alma.
           Existimos en la intersección entre herencia e innovación, donde la calidez
@@ -54,14 +54,16 @@
 
     <section class="journey" id="filosofia" aria-labelledby="journey-titulo">
       <div class="wrap">
-        <h2 id="journey-titulo" class="section-title">Un viaje emocional, pieza a pieza</h2>
+        <h2 id="journey-titulo" class="section-title">
+          Un viaje emocional, pieza a pieza
+        </h2>
         <div class="journey__grid">
           <article class="journey__stage">
             <p class="journey__stage-name">Primera impresión</p>
             <p>
-              Una sensación de calidez y nostalgia te envuelve, como descubrir un
-              tesoro familiar en perfectas condiciones. Hay un reconocimiento
-              inmediato de calidad e intencionalidad.
+              Una sensación de calidez y nostalgia te envuelve, como descubrir
+              un tesoro familiar en perfectas condiciones. Hay un
+              reconocimiento inmediato de calidad e intencionalidad.
             </p>
           </article>
           <article class="journey__stage">
@@ -76,9 +78,9 @@
           <article class="journey__stage">
             <p class="journey__stage-name">Impacto duradero</p>
             <p>
-              Vivir con Hermanos Jota se convierte en parte de tu ritual diario.
-              Cada pieza envejece con gracia, desarrollando carácter mientras
-              mantiene su belleza esencial.
+              Vivir con Hermanos Jota se convierte en parte de tu ritual
+              diario. Cada pieza envejece con gracia, desarrollando carácter
+              mientras mantiene su belleza esencial.
             </p>
           </article>
         </div>
@@ -97,19 +99,37 @@
       </div>
     </section>
 
-    <section class="sustentabilidad" id="sustentabilidad" aria-labelledby="sust-titulo">
+    <section
+      class="sustentabilidad"
+      id="sustentabilidad"
+      aria-labelledby="sust-titulo"
+    >
       <div class="wrap sustentabilidad__inner">
         <p class="eyebrow">Herencia Viva</p>
-        <h2 id="sust-titulo" class="section-title section-title--inverted">Madera certificada, compromiso de por vida</h2>
+        <h2 id="sust-titulo" class="section-title section-title--inverted">
+          Madera certificada, compromiso de por vida
+        </h2>
         <ul class="sust-list">
           <li>Madera certificada FSC® de bosques responsables argentinos</li>
           <li>Prioridad a maderas nativas: algarrobo, quebracho, caldén</li>
-          <li>Garantía extendida: 10 años en estructura, 5 años en acabados</li>
-          <li>Recompra garantizada: hasta 40% del valor en piezas bien cuidadas</li>
+          <li>
+            Garantía extendida: 10 años en estructura, 5 años en acabados
+          </li>
+          <li>
+            Recompra garantizada: hasta 40% del valor en piezas bien cuidadas
+          </li>
         </ul>
       </div>
     </section>
 
+    <section class="productos-destacados" aria-labelledby="destacados-titulo">
+        <h2 id="destacados-titulo">Productos Destacados</h2>
+        <p class="subtitulo-seccion">Selección de nuestras creaciones más emblemáticas</p>
+        
+        <ul class="grilla-productos" id="contenedor-productos">
+            
+        </ul>
+    </section>
   </main>
 
   <footer class="site-footer" id="contacto">
@@ -117,7 +137,7 @@
       <div class="site-footer__block">
         <p class="wordmark wordmark--footer">Hermanos <span>Jota</span></p>
         <address>
-          Av. San Juan 2847, Barrio de San Cristóbal<br>
+          Av. San Juan 2847, Barrio de San Cristóbal<br />
           C1232AAB — Ciudad Autónoma de Buenos Aires, Argentina
         </address>
         <p>Lunes a Viernes 10:00–19:00 · Sábados 10:00–14:00</p>
@@ -132,9 +152,16 @@
           <li><a href="https://www.hermanosjota.com.ar">www.hermanosjota.com.ar</a></li>
         </ul>
       </div>
-      <p class="site-footer__copy">Hermanos Jota — © 2026. Casa Taller, Buenos Aires.</p>
+      <p class="site-footer__copy">
+        Hermanos Jota — © 2026. Casa Taller, Buenos Aires.
+      </p>
     </div>
   </footer>
 
+  <script src="js/catalogo.js" defer></script>
+  <script src="js/carrito.js" defer></script>
+  <script src="js/header.js" defer></script>
+  <script src="js/app.js" defer></script>
+  <script src="js/inicio.js" defer></script>
 </body>
 </html>
