@@ -74,7 +74,7 @@ function renderizarCarrito() {
 
   if (items.length === 0) {
     contenedor.innerHTML =
-      '<p class="carrito-vacio">Tu carrito está vacío. Agregá productos desde <a href="productos.html">nuestro catálogo</a>.</p>';
+      '<p class="carrito-vacio">Tu carrito está vacío. Agregá productos desde <a href="index.html#catalogo">nuestro catálogo</a>.</p>';
     return;
   }
 

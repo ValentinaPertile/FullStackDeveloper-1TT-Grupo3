@@ -1,12 +1,6 @@
 function renderHeader() {
-  const header = document.querySelector('.site-header');
+  const header = document.querySelector(".site-header");
   if (header) return;
-
-  const skipLink = document.createElement('a');
-  skipLink.className = 'skip-link';
-  skipLink.href = '#catalogo';
-  skipLink.textContent = 'Saltar al catálogo';
-  document.body.prepend(skipLink);
 
   const html = `
     <header class="site-header">
@@ -21,9 +15,9 @@ function renderHeader() {
         </button>
         <nav class="main-nav" aria-label="Navegación principal">
           <ul>
-            <li><a href="#filosofia">Filosofía</a></li>
-            <li><a href="#catalogo">Catálogo</a></li>
-            <li><a href="#sustentabilidad">Sustentabilidad</a></li>
+            <li><a href="index.html#filosofia">Filosofía</a></li>
+            <li><a href="index.html#catalogo">Catálogo</a></li>
+            <li><a href="index.html#sustentabilidad">Sustentabilidad</a></li>
             <li><a href="contacto.html">Contacto</a></li>
             <li>
               <a href="contacto.html#carrito-contenedor" class="carrito-link" aria-label="Ver carrito">
@@ -41,27 +35,36 @@ function renderHeader() {
     </header>
   `;
 
-  document.body.insertAdjacentHTML('afterbegin', html);
+  document.body.insertAdjacentHTML("afterbegin", html);
 
-  const menuToggle = document.querySelector('.menu-toggle');
-  const nav = document.querySelector('.main-nav');
+  const menuToggle = document.querySelector(".menu-toggle");
+  const nav = document.querySelector(".main-nav");
 
-  menuToggle.addEventListener('click', () => {
-    const expandido = menuToggle.getAttribute('aria-expanded') === 'true';
-    menuToggle.setAttribute('aria-expanded', !expandido);
-    nav.classList.toggle('nav-abierto');
-    menuToggle.classList.toggle('menu-activo');
+  menuToggle.addEventListener("click", () => {
+    const expandido = menuToggle.getAttribute("aria-expanded") === "true";
+    menuToggle.setAttribute("aria-expanded", !expandido);
+    nav.classList.toggle("nav-abierto");
+    menuToggle.classList.toggle("menu-activo");
   });
 
-  const paginaActual = window.location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.main-nav a').forEach(enlace => {
-    const href = enlace.getAttribute('href');
+  nav.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      menuToggle.setAttribute("aria-expanded", "false");
+      nav.classList.remove("nav-abierto");
+      menuToggle.classList.remove("menu-activo");
+    });
+  });
+
+  const paginaActual =
+    window.location.pathname.split("/").pop() || "index.html";
+  nav.querySelectorAll("a").forEach((enlace) => {
+    const href = enlace.getAttribute("href");
     if (href === paginaActual) {
-      enlace.classList.add('active');
+      enlace.classList.add("active");
     }
   });
 
   cargarCarritoDesdeStorage();
 }
 
-document.addEventListener('DOMContentLoaded', renderHeader);
+document.addEventListener("DOMContentLoaded", renderHeader);
