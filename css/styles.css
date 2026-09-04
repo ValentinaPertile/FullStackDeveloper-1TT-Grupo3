@@ -1,3 +1,5 @@
+/*Hoja de estilos BASE (compartida por todo el sitio)*/
+
 :root {
   /* Paleta de marca */
   --siena: #A0522D;
@@ -52,7 +54,8 @@ a { color: inherit; }
 
 /* Foco visible accesible en toda la página */
 a:focus-visible,
-button:focus-visible {
+button:focus-visible,
+input:focus-visible {
   outline: 2px solid var(--oro);
   outline-offset: 3px;
 }
@@ -107,7 +110,9 @@ button:focus-visible {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
   padding-block: 18px;
+  flex-wrap: wrap;
 }
 
 .wordmark {
@@ -121,12 +126,21 @@ button:focus-visible {
 }
 .wordmark span { color: var(--siena); }
 
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+}
+
 .main-nav ul {
   list-style: none;
   display: flex;
   gap: 32px;
   margin: 0;
   padding: 0;
+  flex-wrap: wrap;
 }
 
 .main-nav a {
@@ -142,6 +156,7 @@ button:focus-visible {
 }
 .main-nav a:hover,
 .main-nav a:focus-visible { color: var(--siena); border-color: var(--oro); }
+.main-nav a[aria-current="page"] { color: var(--siena); border-color: var(--siena); }
 
 /* -------------------- Hero -------------------- */
 .hero {
@@ -178,6 +193,7 @@ button:focus-visible {
   padding: 15px 32px;
   border-radius: var(--radio);
   border: 1px solid transparent;
+  cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
@@ -242,93 +258,15 @@ button:focus-visible {
   margin: 0;
 }
 
-/* -------------------- Catálogo -------------------- */
-.catalogo {
-  background: var(--alabastro);
-  padding-block: 88px;
-}
-
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 40px;
-}
-
-.product-card {
+/* -------------------- CTA al catálogo (home) -------------------- */
+.catalog-teaser {
   background: var(--superficie);
-  border: 1px solid var(--borde);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.product-card__img-wrap {
-  aspect-ratio: 4 / 3;
-  background: linear-gradient(135deg, var(--rosa) 0%, var(--siena) 100%);
-  overflow: hidden;
-}
-
-.product-card__img-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.product-card__body {
-  padding: 28px 28px 32px;
-}
-
-.product-card__category {
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--sage);
-  margin: 0 0 8px;
-}
-
-.product-card__name {
-  font-family: var(--fuente-display);
-  font-weight: 700;
-  font-size: 1.4rem;
-  margin: 0 0 12px;
-  color: var(--tinta);
-}
-
-.product-card__desc {
-  color: var(--tinta-suave);
-  font-size: 0.94rem;
-  margin: 0 0 22px;
-}
-
-.product-card__specs {
-  margin: 0;
-  padding-top: 18px;
+  padding-block: 88px;
+  text-align: center;
   border-top: 1px solid var(--borde);
-  display: grid;
-  gap: 9px;
 }
-
-.product-card__specs > div {
-  display: grid;
-  grid-template-columns: 38% 1fr;
-  gap: 12px;
-  margin: 0;
-}
-
-.product-card__specs dt {
-  font-size: 0.74rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: var(--siena);
-}
-
-.product-card__specs dd {
-  margin: 0;
-  font-size: 0.86rem;
-  color: var(--tinta);
-}
+.catalog-teaser__inner { max-width: 640px; margin-inline: auto; }
+.catalog-teaser .hero__lead { margin-inline: auto; }
 
 /* -------------------- Sustentabilidad -------------------- */
 .sustentabilidad {
@@ -374,8 +312,8 @@ button:focus-visible {
 
 .site-footer__inner {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 40px 60px;
+  grid-template-columns: 1fr;
+  gap: 32px;
 }
 
 .wordmark--footer {
@@ -427,7 +365,6 @@ button:focus-visible {
 }
 
 .site-footer__copy {
-  grid-column: 1 / -1;
   margin-top: 24px;
   padding-top: 24px;
   border-top: 1px solid var(--borde);
@@ -435,9 +372,24 @@ button:focus-visible {
   color: var(--tinta-suave);
 }
 
-/* -------------------- Responsive -------------------- */
-@media (max-width: 860px) {
-  .main-nav ul { gap: 18px; }
+/* -------------------- Responsive (mobile-first) -------------------- */
+@media (max-width: 479px) {
+  .site-header__actions { flex-wrap: wrap; }
+}
+
+@media (min-width: 560px) {
+  .site-header__inner { flex-wrap: nowrap; }
+}
+
+@media (min-width: 620px) {
+  .site-footer__inner { grid-template-columns: 1.2fr 1fr; }
+}
+
+@media (min-width: 860px) {
+  .journey__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 859px) {
   .journey__grid { grid-template-columns: 1fr; }
   .journey__stage {
     border-left: none;
@@ -445,12 +397,4 @@ button:focus-visible {
     padding: 28px 0 8px;
   }
   .journey__stage:first-child { border-top: none; }
-  .site-footer__inner { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 560px) {
-  .site-header__inner { flex-direction: column; gap: 14px; align-items: flex-start; }
-  .main-nav ul { flex-wrap: wrap; gap: 12px 20px; }
-  .hero { padding-block: 64px 56px; }
-  .catalogo, .journey, .sustentabilidad { padding-block: 56px; }
 }

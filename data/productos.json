@@ -1,0 +1,98 @@
+[
+  {
+    "id": "aconcagua",
+    "categoria": "Dormitorio",
+    "nombre": "Mesa de Noche Aconcagua",
+    "precio": 499999,
+    "imagen": "img/Mesa de Noche Aconcagua.png",
+    "descripcionCorta": "Mesa de noche con cajón oculto y repisa inferior en roble certificado FSC®.",
+    "descripcionLarga": "Mesa de noche con cajón oculto y repisa inferior en roble certificado FSC®. Su diseño limpio y funcional permite convivir con diferentes estilos de dormitorio, ofreciendo almacenamiento discreto y elegante para objetos personales.",
+    "specs": [
+      { "label": "Medidas", "valor": "45 × 35 × 60 cm" },
+      { "label": "Materiales", "valor": "Roble macizo FSC®, herrajes soft-close" },
+      { "label": "Acabado", "valor": "Barniz mate de poliuretano" },
+      { "label": "Almacenamiento", "valor": "1 cajón + repisa inferior" },
+      { "label": "Características", "valor": "Cajón con cierre suave" }
+    ]
+  },
+  {
+    "id": "patagonia",
+    "categoria": "Living",
+    "nombre": "Sofá Patagonia",
+    "precio": 900000,
+    "imagen": "img/Sofá Patagonia.png",
+    "descripcionCorta": "Sofá de tres cuerpos tapizado en lino Warm Alabaster con patas cónicas de madera.",
+    "descripcionLarga": "Sofá de tres cuerpos tapizado en lino Warm Alabaster con patas cónicas de madera. Los cojines combinan espuma de alta resiliencia con plumón reciclado, ofreciendo comodidad duradera y sostenible para el hogar moderno.",
+    "specs": [
+      { "label": "Medidas", "valor": "220 × 90 × 80 cm" },
+      { "label": "Estructura", "valor": "Madera de eucalipto certificada FSC®" },
+      { "label": "Tapizado", "valor": "Lino 100% natural premium" },
+      { "label": "Relleno", "valor": "Espuma HR + plumón reciclado" },
+      { "label": "Sostenibilidad", "valor": "Materiales 100% reciclables" }
+    ]
+  },
+  {
+    "id": "pampa",
+    "categoria": "Comedor",
+    "nombre": "Mesa Comedor Pampa",
+    "precio": 980000,
+    "imagen": "img/Mesa comedor Pampa.png",
+    "descripcionCorta": "Mesa extensible de roble macizo con tablero biselado y sistema de apertura suave.",
+    "descripcionLarga": "Mesa extensible de roble macizo con tablero biselado y sistema de apertura suave. Su diseño robusto y elegante se adapta perfectamente a reuniones íntimas o grandes celebraciones familiares, extendiéndose de 6 a 10 comensales.",
+    "specs": [
+      { "label": "Medidas", "valor": "160-240 × 90 × 75 cm" },
+      { "label": "Materiales", "valor": "Roble macizo FSC®, mecanismo alemán" },
+      { "label": "Acabado", "valor": "Aceite-cera natural" },
+      { "label": "Capacidad", "valor": "6-10 comensales" },
+      { "label": "Extensión", "valor": "Sistema de mariposa central" }
+    ]
+  },
+  {
+    "id": "cordoba",
+    "categoria": "Comedor",
+    "nombre": "Sillas Córdoba",
+    "precio": 300000,
+    "imagen": "img/sillas Córdoba.png",
+    "descripcionCorta": "Set de cuatro sillas apilables en contrachapado moldeado de nogal.",
+    "descripcionLarga": "Set de cuatro sillas apilables en contrachapado moldeado de nogal y estructura tubular pintada en Sage Green. Su diseño ergonómico y materiales de calidad garantizan comodidad y durabilidad en el uso diario.",
+    "specs": [
+      { "label": "Medidas", "valor": "45 × 52 × 80 cm (cada una)" },
+      { "label": "Materiales", "valor": "Contrachapado nogal, tubo de acero" },
+      { "label": "Acabado", "valor": "Laca mate, pintura epoxi" },
+      { "label": "Apilables", "valor": "Hasta 6 sillas" },
+      { "label": "Incluye", "valor": "Set de 4 sillas" }
+    ]
+  },
+  {
+    "id": "costa",
+    "categoria": "Oficina",
+    "nombre": "Escritorio Costa",
+    "precio": 780000,
+    "imagen": "img/escritorio Costa.png",
+    "descripcionCorta": "Escritorio compacto con cajón organizado y tapa pasacables integrada en bambú laminado.",
+    "descripcionLarga": "Escritorio compacto con cajón organizado y tapa pasacables integrada en bambú laminado. Ideal para espacios de trabajo en casa, combina funcionalidad moderna con estética minimalista y sostenible.",
+    "specs": [
+      { "label": "Medidas", "valor": "120 × 60 × 75 cm" },
+      { "label": "Materiales", "valor": "Bambú laminado, herrajes ocultos" },
+      { "label": "Acabado", "valor": "Laca mate resistente" },
+      { "label": "Almacenamiento", "valor": "1 cajón con organizador" },
+      { "label": "Cables", "valor": "Pasacables integrado" }
+    ]
+  },
+  {
+    "id": "belgrano",
+    "categoria": "Oficina",
+    "nombre": "Silla de Trabajo Belgrano",
+    "precio": 245000,
+    "imagen": "img/silla de trabajo Belgrano.png",
+    "descripcionCorta": "Silla ergonómica regulable en altura con respaldo de malla transpirable.",
+    "descripcionLarga": "Silla ergonómica regulable en altura con respaldo de malla transpirable y asiento tapizado en tejido reciclado. Diseñada para largas jornadas de trabajo con máximo confort y apoyo lumbar.",
+    "specs": [
+      { "label": "Medidas", "valor": "60 × 60 × 90-100 cm" },
+      { "label": "Materiales", "valor": "Malla técnica, tejido reciclado" },
+      { "label": "Acabado", "valor": "Base cromada, tapizado premium" },
+      { "label": "Regulación", "valor": "Altura + inclinación de respaldo" },
+      { "label": "Certificación", "valor": "Ergonomía europea EN 1335" }
+    ]
+  }
+]
