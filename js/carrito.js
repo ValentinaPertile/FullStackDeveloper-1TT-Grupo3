@@ -1,5 +1,5 @@
 /*Carrito de compras
-Módulo compartido por catalogo.js y producto.js./
+Módulo compartido por catalogo.js y producto.js.*/
 
 const CLAVE_CARRITO = "hj_carrito";
 
