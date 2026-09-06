@@ -25,8 +25,12 @@
     <header class="site-header">
       <div class="wrap site-header__inner">
         <a class="logo-link" href="index.html#inicio">
-        <img src="img/logo.svg" alt="Logo Hermanos Jota" style="height: 40px; width: auto;" />
-      </a>
+          <img
+            src="img/logo.svg"
+            alt="Logo Hermanos Jota"
+            style="height: 40px; width: auto"
+          />
+        </a>
         <div class="site-header__actions">
           <nav class="main-nav" aria-label="Navegación principal">
             <ul>
@@ -36,16 +40,16 @@
               <li><a href="contacto.html">Contacto</a></li>
             </ul>
           </nav>
-          <button
-            type="button"
-            id="btn-abrir-carrito"
-            class="btn btn--cart"
-            aria-haspopup="dialog"
-            aria-controls="carrito-drawer"
-          >
-            Carrito <span id="carrito-contador" class="cart-badge">0</span>
-          </button>
         </div>
+        <button
+          type="button"
+          id="btn-abrir-carrito"
+          class="btn btn--cart"
+          aria-haspopup="dialog"
+          aria-controls="carrito-drawer"
+        >
+          Carrito <span id="carrito-contador" class="cart-badge">0</span>
+        </button>
       </div>
     </header>
 
@@ -81,11 +85,14 @@
 
       <section class="productos-destacados" aria-labelledby="destacados-titulo">
         <div class="wrap">
-            <h2 id="destacados-titulo" class="section-title">Productos Destacados</h2>
-            <p class="subtitulo-seccion">Selección de nuestras creaciones más emblemáticas</p>
-            
-            <ul id="contenedor-productos" class="grilla-productos">
-                </ul>
+          <h2 id="destacados-titulo" class="section-title">
+            Productos Destacados
+          </h2>
+          <p class="subtitulo-seccion">
+            Selección de nuestras creaciones más emblemáticas
+          </p>
+
+          <ul id="contenedor-productos" class="grilla-productos"></ul>
         </div>
       </section>
 
@@ -253,6 +260,7 @@
       </div>
     </footer>
 
+    <script src="js/header.js" defer></script>
     <script type="module" src="js/carrito.js" defer></script>
     <script type="module" src="js/inicio.js" defer></script>
   </body>
