@@ -67,47 +67,67 @@ export function actualizarBadge() {
   if (badge) badge.textContent = String(contarUnidades());
 }
 
+let carritoInicializado = false;
+
+async function cargarProductosFallback() {
+  const res = await fetch("data/productos.json");
+  if (!res.ok) throw new Error("Error al cargar productos");
+  return res.json();
+}
+
 /**
  * Conecta el botón de carrito, el panel lateral (drawer) y sus
  * interacciones (abrir, cerrar, sumar/restar, quitar, vaciar).
  * `productosPromise` debe resolver al array completo de productos,
  * para poder mostrar imagen, nombre y precio de cada ítem.
  */
-export function initCarritoUI(productosPromise) {
+export function initCarritoUI(productosPromise = null) {
+  const drawer = document.getElementById("carrito-drawer");
+  actualizarBadge();
+
+  if (!drawer || carritoInicializado) return;
+  carritoInicializado = true;
+
+  if (!productosPromise) {
+    productosPromise = cargarProductosFallback();
+  }
+
   const btnAbrir = document.getElementById("btn-abrir-carrito");
   const btnCerrar = document.getElementById("btn-cerrar-carrito");
   const btnVaciar = document.getElementById("btn-vaciar-carrito");
-  const drawer = document.getElementById("carrito-drawer");
   const overlay = document.getElementById("carrito-overlay");
   const lista = document.getElementById("carrito-lista");
   const vacioMsg = document.getElementById("carrito-vacio-msg");
   const totalEl = document.getElementById("carrito-total");
 
-  actualizarBadge();
-  if (!drawer) return;
-
   function abrirDrawer() {
     drawer.classList.add("is-open");
     drawer.setAttribute("aria-hidden", "false");
-    overlay.hidden = false;
-    requestAnimationFrame(() => overlay.classList.add("is-visible"));
+    if (overlay) {
+      overlay.hidden = false;
+      requestAnimationFrame(() => overlay.classList.add("is-visible"));
+    }
     document.body.style.overflow = "hidden";
   }
 
   function cerrarDrawer() {
     drawer.classList.remove("is-open");
     drawer.setAttribute("aria-hidden", "true");
-    overlay.classList.remove("is-visible");
+    if (overlay) {
+      overlay.classList.remove("is-visible");
+      setTimeout(() => {
+        overlay.hidden = true;
+      }, 250);
+    }
     document.body.style.overflow = "";
-    setTimeout(() => { overlay.hidden = true; }, 250);
   }
 
   async function renderizarCarrito() {
     const productos = await productosPromise;
     const carrito = obtenerCarrito();
 
-    lista.innerHTML = "";
-    vacioMsg.hidden = carrito.length !== 0;
+    if (lista) lista.innerHTML = "";
+    if (vacioMsg) vacioMsg.hidden = carrito.length !== 0;
 
     let total = 0;
 
@@ -132,10 +152,10 @@ export function initCarritoUI(productosPromise) {
         </div>
         <button type="button" class="cart-item__quitar" data-accion="quitar" data-id="${producto.id}" aria-label="Quitar del carrito">×</button>
       `;
-      lista.appendChild(li);
+      if (lista) lista.appendChild(li);
     });
 
-    totalEl.textContent = formatoPrecio(total);
+    if (totalEl) totalEl.textContent = formatoPrecio(total);
     actualizarBadge();
   }
 
@@ -168,3 +188,11 @@ export function initCarritoUI(productosPromise) {
     renderizarCarrito();
   });
 }
+
+// Auto-inicializar la UI del carrito cuando el DOM esté listo
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => initCarritoUI());
+} else {
+  initCarritoUI();
+}
+

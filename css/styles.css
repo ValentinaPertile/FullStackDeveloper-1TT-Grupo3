@@ -115,6 +115,14 @@ input:focus-visible {
   color: var(--alabastro);
 }
 
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  flex-shrink: 0;
+}
+
 /* -------------------- Encabezado -------------------- */
 /* .site-header {
   position: sticky;

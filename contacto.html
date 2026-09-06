@@ -14,15 +14,45 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/styles.css?v=1.0" />
-    <link rel="stylesheet" href="css/contacto.css?v=1.0" />
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <link rel="stylesheet" href="css/contacto.css" />
+
     <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/carrito.css" />
+    <link rel="stylesheet" href="css/productos.css" />
   </head>
   <body>
     <a class="skip-link" href="#form-contacto"
       >Saltar al formulario de contacto</a
     >
+
+    <header class="site-header">
+      <div class="wrap site-header__inner">
+        <a class="wordmark" href="index.html#inicio">
+          Hermanos <span>Jota</span>
+        </a>
+        <div class="site-header__actions">
+          <nav class="main-nav" aria-label="Navegación principal">
+            <ul>
+              <li><a href="index.html#filosofia">Filosofía</a></li>
+              <li><a href="productos.html" aria-current="page">Catálogo</a></li>
+              <li><a href="index.html#sustentabilidad">Sustentabilidad</a></li>
+              <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+          </nav>
+          <button
+            type="button"
+            id="btn-abrir-carrito"
+            class="btn btn--cart"
+            aria-haspopup="dialog"
+            aria-controls="carrito-drawer"
+          >
+            Carrito <span id="carrito-contador" class="cart-badge">0</span>
+          </button>
+        </div>
+      </div>
+    </header>
 
     <main id="contacto" class="contacto-page">
       <div class="wrap">
@@ -134,15 +164,42 @@
             </div>
           </aside>
         </div>
-
-        <!-- Carrito -->
-        <section id="carrito-seccion" class="seccion">
-          <h2 class="seccion-titulo">Tu Carrito</h2>
-          <hr class="seccion-linea" />
-          <div id="carrito-contenedor"></div>
-        </section>
       </div>
     </main>
+
+    <!-- Panel lateral del carrito -->
+    <div id="carrito-overlay" class="cart-overlay" hidden></div>
+    <aside
+      id="carrito-drawer"
+      class="cart-drawer"
+      aria-hidden="true"
+      aria-label="Carrito de compras"
+    >
+      <div class="cart-drawer__header">
+        <h2>Tu carrito</h2>
+        <button
+          type="button"
+          id="btn-cerrar-carrito"
+          class="cart-drawer__close"
+          aria-label="Cerrar carrito"
+        >
+          ×
+        </button>
+      </div>
+      <ul id="carrito-lista" class="cart-list"></ul>
+      <p id="carrito-vacio-msg" class="cart-empty">
+        Todavía no agregaste productos.
+      </p>
+      <div class="cart-drawer__footer">
+        <div class="cart-total">
+          <span>Total</span>
+          <span id="carrito-total">$0</span>
+        </div>
+        <button type="button" id="btn-vaciar-carrito" class="btn btn--ghost">
+          Vaciar carrito
+        </button>
+      </div>
+    </aside>
 
     <footer class="site-footer">
       <div class="wrap site-footer__inner">
@@ -190,10 +247,7 @@
       </div>
     </footer>
 
-    <script src="js/catalogo.js" defer></script>
-    <script src="js/carrito.js" defer></script>
-    <script src="js/header.js" defer></script>
-    <script src="js/app.js" defer></script>
+    <script type="module" src="js/carrito.js" defer></script>
     <script src="js/contacto.js" defer></script>
   </body>
 </html>

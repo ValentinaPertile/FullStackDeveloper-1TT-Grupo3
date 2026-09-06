@@ -64,8 +64,7 @@ function filtrarProductos(productos, termino) {
   if (!texto) return productos;
   return productos.filter((p) =>
     p.nombre.toLowerCase().includes(texto) ||
-    p.categoria.toLowerCase().includes(texto) ||
-    p.descripcionCorta.toLowerCase().includes(texto)
+    p.categoria.toLowerCase().includes(texto)
   );
 }
 
