@@ -24,8 +24,12 @@
   <body>
     <header class="site-header">
       <div class="wrap site-header__inner">
-        <a class="wordmark" href="index.html#inicio">
-          Hermanos <span>Jota</span>
+        <a class="logo-link" href="index.html#inicio">
+          <img
+            src="img/logo.svg"
+            alt="Logo Hermanos Jota"
+            style="height: 40px; width: auto"
+          />
         </a>
         <nav id="main-nav" class="main-nav" aria-label="Navegación principal">
           <ul>
@@ -77,7 +81,7 @@
         </div>
         <div class="hero-imagen">
           <img
-            src="img/Sillón Copacabana.webp"
+            src="img/sillon_copacabana.webp"
             alt="Sillón Copacabana - Diseño icónico"
             loading="lazy"
           />
@@ -91,6 +95,19 @@
           />
         </svg>
       </div>
+
+      <section class="productos-destacados" aria-labelledby="destacados-titulo">
+        <div class="wrap">
+          <h2 id="destacados-titulo" class="section-title">
+            Productos Destacados
+          </h2>
+          <p class="subtitulo-seccion">
+            Selección de nuestras creaciones más emblemáticas
+          </p>
+
+          <ul id="contenedor-productos" class="grilla-productos"></ul>
+        </div>
+      </section>
 
       <section class="journey" id="filosofia" aria-labelledby="journey-titulo">
         <div class="wrap">
@@ -258,5 +275,6 @@
 
     <script src="js/header.js" defer></script>
     <script type="module" src="js/carrito.js" defer></script>
+    <script type="module" src="js/inicio.js" defer></script>
   </body>
 </html>
