@@ -31,27 +31,40 @@
             style="height: 40px; width: auto"
           />
         </a>
+        <nav id="main-nav" class="main-nav" aria-label="Navegación principal">
+          <ul>
+            <li><a href="index.html#filosofia">Filosofía</a></li>
+            <li><a href="productos.html">Catálogo</a></li>
+            <li><a href="index.html#sustentabilidad">Sustentabilidad</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+          </ul>
+        </nav>
         <div class="site-header__actions">
-          <nav class="main-nav" aria-label="Navegación principal">
-            <ul>
-              <li><a href="index.html#filosofia">Filosofía</a></li>
-              <li><a href="productos.html" aria-current="page">Catálogo</a></li>
-              <li><a href="index.html#sustentabilidad">Sustentabilidad</a></li>
-              <li><a href="contacto.html">Contacto</a></li>
-            </ul>
-          </nav>
+          <button
+            type="button"
+            id="btn-abrir-carrito"
+            class="btn btn--cart"
+            aria-haspopup="dialog"
+            aria-controls="carrito-drawer"
+          >
+            Carrito <span id="carrito-contador" class="cart-badge">0</span>
+          </button>
+          <button
+            type="button"
+            id="menu-toggle"
+            class="menu-toggle"
+            aria-label="Abrir menú"
+            aria-expanded="false"
+            aria-controls="main-nav"
+          >
+            <span class="menu-linea" aria-hidden="true"></span>
+            <span class="menu-linea" aria-hidden="true"></span>
+            <span class="menu-linea" aria-hidden="true"></span>
+          </button>
         </div>
-        <button
-          type="button"
-          id="btn-abrir-carrito"
-          class="btn btn--cart"
-          aria-haspopup="dialog"
-          aria-controls="carrito-drawer"
-        >
-          Carrito <span id="carrito-contador" class="cart-badge">0</span>
-        </button>
       </div>
     </header>
+    <div id="menu-overlay" class="menu-overlay" hidden></div>
 
     <main id="inicio">
       <section class="hero-banner" aria-labelledby="hero-titulo">
