@@ -64,8 +64,25 @@ export function formatoPrecio(valor) {
 /** Actualiza el numerito del botón "Carrito" en el header, si existe */
 export function actualizarBadge() {
   const badge = document.getElementById("carrito-contador");
+
   if (badge) badge.textContent = String(contarUnidades());
 }
+
+const btnCheckout = document.getElementById("btn-checkout");
+
+btnCheckout?.addEventListener("click", () => {
+  const carrito = obtenerCarrito();
+  if (carrito.length === 0) {
+    alert("El carrito está vacío.");
+    return;
+  }
+
+  const mensaje = `¿Está seguro de finalizar la compra?`;
+  if (confirm(mensaje)) {
+    vaciarCarrito();
+    alert("¡Gracias por su compra!");
+  }
+});
 
 let carritoInicializado = false;
 
@@ -195,4 +212,3 @@ if (document.readyState === "loading") {
 } else {
   initCarritoUI();
 }
-
