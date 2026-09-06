@@ -27,15 +27,15 @@
         <a class="wordmark" href="index.html#inicio">
           Hermanos <span>Jota</span>
         </a>
+        <nav id="main-nav" class="main-nav" aria-label="Navegación principal">
+          <ul>
+            <li><a href="index.html#filosofia">Filosofía</a></li>
+            <li><a href="productos.html">Catálogo</a></li>
+            <li><a href="index.html#sustentabilidad">Sustentabilidad</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+          </ul>
+        </nav>
         <div class="site-header__actions">
-          <nav class="main-nav" aria-label="Navegación principal">
-            <ul>
-              <li><a href="index.html#filosofia">Filosofía</a></li>
-              <li><a href="productos.html" aria-current="page">Catálogo</a></li>
-              <li><a href="index.html#sustentabilidad">Sustentabilidad</a></li>
-              <li><a href="contacto.html">Contacto</a></li>
-            </ul>
-          </nav>
           <button
             type="button"
             id="btn-abrir-carrito"
@@ -45,9 +45,22 @@
           >
             Carrito <span id="carrito-contador" class="cart-badge">0</span>
           </button>
+          <button
+            type="button"
+            id="menu-toggle"
+            class="menu-toggle"
+            aria-label="Abrir menú"
+            aria-expanded="false"
+            aria-controls="main-nav"
+          >
+            <span class="menu-linea" aria-hidden="true"></span>
+            <span class="menu-linea" aria-hidden="true"></span>
+            <span class="menu-linea" aria-hidden="true"></span>
+          </button>
         </div>
       </div>
     </header>
+    <div id="menu-overlay" class="menu-overlay" hidden></div>
 
     <main>
       <div class="wrap">
@@ -137,6 +150,7 @@
       </div>
     </footer>
 
+    <script src="js/header.js" defer></script>
     <script type="module" src="js/producto.js"></script>
   </body>
 </html>
