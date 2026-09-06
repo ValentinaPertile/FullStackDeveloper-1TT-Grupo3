@@ -42,7 +42,7 @@
     "categoria": "Comedor",
     "nombre": "Mesa Comedor Pampa",
     "precio": 980000,
-    "imagen": "img/mesa_comedor_pampa.webp",
+    "imagen": "img/Mesa Comedor Pampa.webp",
     "descripcionCorta": "Mesa extensible de roble macizo con tablero biselado y sistema de apertura suave.",
     "descripcionLarga": "Mesa extensible de roble macizo con tablero biselado y sistema de apertura suave. Su diseño robusto y elegante se adapta perfectamente a reuniones íntimas o grandes celebraciones familiares, extendiéndose de 6 a 10 comensales.",
     "specs": [
@@ -58,7 +58,7 @@
     "categoria": "Comedor",
     "nombre": "Sillas Córdoba",
     "precio": 300000,
-    "imagen": "img/silla_cordoba.webp",
+    "imagen": "img/Sillas Córdoba.webp",
     "descripcionCorta": "Set de cuatro sillas apilables en contrachapado moldeado de nogal.",
     "descripcionLarga": "Set de cuatro sillas apilables en contrachapado moldeado de nogal y estructura tubular pintada en Sage Green. Su diseño ergonómico y materiales de calidad garantizan comodidad y durabilidad en el uso diario.",
     "specs": [
@@ -74,7 +74,7 @@
     "categoria": "Oficina",
     "nombre": "Escritorio Costa",
     "precio": 780000,
-    "imagen": "img/escritorio_costa.webp",
+    "imagen": "img/Escritorio Costa.webp",
     "descripcionCorta": "Escritorio compacto con cajón organizado y tapa pasacables integrada en bambú laminado.",
     "descripcionLarga": "Escritorio compacto con cajón organizado y tapa pasacables integrada en bambú laminado. Ideal para espacios de trabajo en casa, combina funcionalidad moderna con estética minimalista y sostenible.",
     "specs": [
@@ -90,7 +90,7 @@
     "categoria": "Oficina",
     "nombre": "Silla de Trabajo Belgrano",
     "precio": 245000,
-    "imagen": "img/silla_de_trabajo_belgrano.webp",
+    "imagen": "img/Silla de Trabajo Belgrano.webp",
     "descripcionCorta": "Silla ergonómica regulable en altura con respaldo de malla transpirable.",
     "descripcionLarga": "Silla ergonómica regulable en altura con respaldo de malla transpirable y asiento tapizado en tejido reciclado. Diseñada para largas jornadas de trabajo con máximo confort y apoyo lumbar.",
     "specs": [
