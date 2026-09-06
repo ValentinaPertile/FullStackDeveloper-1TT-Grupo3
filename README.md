@@ -145,18 +145,18 @@ FullStackDeveloper-1TT-Grupo3/
 ├── data/
 │   └── productos.json          # Fuente de datos en formato JSON con la información del catálogo
 │
-├── img/                        # Recursos gráficos optimizados en formato WebP y logotipo en SVG
-│   ├── Aparador Uspallata.webp
-│   ├── Biblioteca Recoleta.webp
-│   ├── Butaca Mendoza.webp
-│   ├── Escritorio Costa.webp
-│   ├── Mesa Comedor Pampa.webp
-│   ├── Mesa de Centro Araucaria.webp
-│   ├── Mesa de Noche Aconcagua.webp
-│   ├── Silla de Trabajo Belgrano.webp
-│   ├── Sillas Córdoba.webp
-│   ├── Sillón Copacabana.webp
-│   ├── Sofá Patagonia.webp
+├── img/                        # Recursos gráficos optimizados en WebP y logotipo SVG
+│   ├── aparador_uspallata.webp
+│   ├── biblioteca_recoleta.webp
+│   ├── butaca_mendoza.webp
+│   ├── escritorio_costa.webp
+│   ├── mesa_comedor_pampa.webp
+│   ├── mesa_de_centro_araucaria.webp
+│   ├── mesa_de_noche_aconcagua.webp
+│   ├── silla_cordoba.webp
+│   ├── silla_de_trabajo_belgrano.webp
+│   ├── sillon_copacabana.webp
+│   ├── sofa_patagonia.webp
 │   └── logo.svg
 │
 ├── js/
