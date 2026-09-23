@@ -1,3 +1,5 @@
+import { NODE_ENV } from "../../../core/config/config.js";
+import { ErrorResponse } from "../../../core/errors/error-handler.js";
 import { AuthService } from "../services/auth.service.js";
 
 export class AuthController {
@@ -61,6 +63,44 @@ export class AuthController {
         success: true,
         message: "Register exitoso",
       });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  // LOGOUT
+  // ============================================================
+  logout = async (req, res, next) => {
+    try {
+      let token = null;
+
+      if (
+        req.headers.authorization &&
+        req.headers.authorization.startsWith("Bearer ")
+      ) {
+        token = req.headers.authorization.substring(7);
+      } else if (req.cookies && req.cookies.accessToken) {
+        token = req.cookies.accessToken;
+      }
+
+      if (!token) {
+        throw new ErrorResponse("Token no encontrado", 401);
+      }
+
+      const isProduction = NODE_ENV === "production";
+
+      return res
+        .clearCookie("accessToken", {
+          httpOnly: true,
+          secure: isProduction,
+          sameSite: isProduction ? "none" : "lax",
+          path: "/",
+        })
+        .status(200)
+        .json({
+          success: true,
+          message: "Logout exitoso",
+        });
     } catch (error) {
       next(error);
     }

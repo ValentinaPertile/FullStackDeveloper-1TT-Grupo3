@@ -1,5 +1,8 @@
-import { verifyToken } from "../../shared/utils/jwt";
-import { ErrorResponse } from "../errors/error-handler";
+import jwt from "jsonwebtoken";
+import { verifyToken } from "../../shared/utils/jwt.js";
+import { ErrorResponse } from "../errors/error-handler.js";
+
+import { NODE_ENV } from "../config/config.js";
 
 export const isAuthenticated = async (req, res, next) => {
   try {
@@ -31,13 +34,22 @@ export const isAuthenticated = async (req, res, next) => {
 
     next();
   } catch (error) {
-    const isProduction = process.env.NODE_ENV === "production";
+    const isProduction = NODE_ENV === "production";
 
-    return res.status(401).clearCookie("accessToken", {
+    res.status(401).clearCookie("accessToken", {
       httpOnly: true,
       secure: isProduction,
       sameSite: isProduction ? "none" : "lax",
       path: "/",
     });
+
+    if (
+      error instanceof jwt.JsonWebTokenError ||
+      error.name === "TokenExpiredError"
+    ) {
+      return next(new ErrorResponse("Sesión expirada o token inválido", 401));
+    }
+
+    next(error);
   }
 };

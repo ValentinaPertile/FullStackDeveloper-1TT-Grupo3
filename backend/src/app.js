@@ -4,15 +4,19 @@ import cookieParser from "cookie-parser";
 
 import { connectDB } from "./core/database/database.js";
 import { ErrorHandler } from "./core/middleware/error-handler.js";
-import { API_PREFIX, PORT } from "./core/config/config.js";
+import { API_PREFIX, FRONTEND_URL, PORT } from "./core/config/config.js";
 import { Auth } from "./index.js";
+
+import passport from "passport";
+
+import "./core/config/passport.js";
 
 // Inicialización de aplicación
 const app = express();
 
 app.set("trust proxy", 1); // Confía en el proxy (Vercel, Nginx, etc.)
 
-const origins = [process.env.FRONTEND_URL];
+const origins = [FRONTEND_URL];
 
 // Configuración de CORS
 app.use(
@@ -30,6 +34,8 @@ connectDB();
 
 // Cookie parser
 app.use(cookieParser());
+
+app.use(passport.initialize());
 
 // Rutas
 app.get(`${API_PREFIX}/health`, (req, res) => {
