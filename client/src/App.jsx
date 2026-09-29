@@ -2,8 +2,9 @@ import "./App.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { appRoutes } from "./routes/appRoutes";
+import Layout from "./components/layout/Layout";
 
-// TankStack Query Client Setup
+// TanStack Query Client Setup
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -18,9 +19,11 @@ const queryClient = new QueryClient({
 function AppRoutesContent() {
   return (
     <Routes>
-      {appRoutes.map((route, idx) => (
-        <Route key={idx} path={route.path} element={route.element} />
-      ))}
+      <Route element={<Layout />}>
+        {appRoutes.map((route, idx) => (
+          <Route key={idx} path={route.path} element={route.element} />
+        ))}
+      </Route>
     </Routes>
   );
 }
