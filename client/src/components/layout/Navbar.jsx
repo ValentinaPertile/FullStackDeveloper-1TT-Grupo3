@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ROUTES } from "../../routes/paths";
+import { OUT_AUTH, ROUTES } from "../../routes/paths";
 import { useCart } from "../../hooks/useCart";
 import Cart from "../Cart";
 
@@ -37,6 +37,10 @@ export default function Navbar() {
       }
     }
   };
+
+  if (OUT_AUTH.includes(location.pathname)) {
+    return null;
+  }
 
   return (
     <>
