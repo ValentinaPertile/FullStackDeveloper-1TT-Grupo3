@@ -187,6 +187,49 @@ input:focus-visible {
   flex-shrink: 0;
 }
 
+.btn--auth {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  color: var(--tinta);
+  border: 1px solid var(--borde);
+  padding: 8px 14px;
+  border-radius: var(--radio);
+  font-family: var(--fuente-cuerpo);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+
+.btn--auth:hover,
+.btn--auth:focus-visible {
+  border-color: var(--tinta);
+  background: rgba(54, 36, 24, 0.05);
+  color: var(--siena);
+}
+
+.btn--auth.is-active {
+  border-color: var(--siena);
+  color: var(--siena);
+  background: rgba(160, 82, 45, 0.08);
+}
+
+.btn--auth svg {
+  flex-shrink: 0;
+  transition: stroke 0.2s ease;
+}
+
+.btn--auth:hover svg,
+.btn--auth.is-active svg {
+  stroke: var(--siena);
+}
+
 .btn--cart {
   display: inline-flex;
   align-items: center;
@@ -331,6 +374,15 @@ input:focus-visible {
   padding-left: 20px;
 }
 
+.main-nav a.active-link {
+  color: var(--siena);
+  font-weight: 600;
+}
+
+.mobile-only-auth {
+  display: block;
+}
+
 .menu-overlay {
   position: fixed;
   inset: 0;
@@ -351,7 +403,20 @@ body.menu-bloqueado {
   overflow: hidden;
 }
 
+@media (max-width: 520px) {
+  .btn--auth span {
+    display: none;
+  }
+  .btn--auth {
+    padding: 8px 10px;
+  }
+}
+
 @media (min-width: 900px) {
+  .mobile-only-auth {
+    display: none;
+  }
+
   .menu-toggle {
     display: none;
   }
