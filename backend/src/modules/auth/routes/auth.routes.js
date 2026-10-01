@@ -9,7 +9,9 @@ import { ErrorResponse } from "../../../core/errors/error-handler.js";
 import User from "../../../core/models/User.js";
 
 import passport from "../../../core/config/passport.js";
-import { createToken } from "../../../shared/utils/jwt.js";
+import { createToken, signIn } from "../../../shared/utils/jwt.js";
+import { sendPopupResponse } from "../../../shared/utils/popup.js";
+import { NODE_ENV } from "../../../core/config/config.js";
 
 const router = Router();
 
@@ -27,17 +29,42 @@ router.get(
   }),
 );
 
-router.get(
-  "/google/callback",
-  passport.authenticate("google", {
-    session: false,
-    failureRedirect: `${process.env.FRONTEND_URL}/login?error=oauth_failed`,
-  }),
-  (req, res, next) => {
-    try {
-      const token = createToken(req.user);
+router.get("/google/callback", (req, res, next) => {
+  passport.authenticate("google", { session: false }, (err, user, result, info) => {
+    if (err) {
+      console.log("Error desde done(err):", err.message);
 
-      const isProduction = process.env.NODE_ENV === "production";
+      return sendPopupResponse(res, {
+        type: "OAUTH_ERROR",
+        error: err.message || "Error de autenticación",
+      });
+    }
+
+    // Se canceló el login
+    if (!result) {
+      return sendPopupResponse(res, {
+        type: "OAUTH_ERROR",
+        error: "Autenticación cancelada o denegada",
+      });
+    }
+
+    // 3. Autenticación exitosa (result contiene lo que enviaste en el done(null, user))
+    try {
+      const { payload, isNew } = user;
+
+      // 4. Si es usuario nuevo, se dirige a registrarse
+      if (isNew) {
+        const registerToken = signIn(payload);
+
+        return sendPopupResponse(res, {
+          type: "OAUTH_REGISTER",
+          data: registerToken,
+        });
+      }
+
+      const token = createToken(payload);
+
+      const isProduction = NODE_ENV === "production";
       const cookieAge = 24 * 60 * 60 * 1000;
 
       res.cookie("accessToken", token, {
@@ -48,22 +75,17 @@ router.get(
         path: "/",
       });
 
-      // TEST
-      // ==========
-      console.log(`Login exitoso. User: ${req.user.email}`);
-      console.log(`Token: ${token}`);
-      console.log(`Login exitoso. User: ${req.user.email}`);
-      console.log(`Token: ${token}`);
-
-      return res.status(200).json({
-        success: true,
-        message: "Login exitoso",
+      return sendPopupResponse(res, {
+        type: "OAUTH_SUCCESS",
       });
     } catch (error) {
-      next(error);
+      return sendPopupResponse(res, {
+        type: "OAUTH_ERROR",
+        error: "Error de autenticación",
+      });
     }
-  },
-);
+  })(req, res, next);
+});
 
 // 1. RUTA DE LOGIN
 // =========================================================

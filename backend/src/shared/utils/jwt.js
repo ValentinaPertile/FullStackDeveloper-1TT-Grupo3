@@ -23,3 +23,10 @@ export function createToken(user) {
 export function verifyToken(token) {
   return jwt.verify(token, JWT_SECRET);
 }
+
+export function signIn(payload) {
+  return jwt.sign(payload, JWT_SECRET, {
+    expiresIn: "15m",
+    algorithm: "HS256",
+  });
+}
