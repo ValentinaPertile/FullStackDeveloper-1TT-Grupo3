@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import ProductList from "../components/ProductList";
 import { useCart } from "../hooks/useCart";
+import { PRODUCTOS } from "../data/productos";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 
 export default function Products() {
   const { addToCart } = useCart();
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState(PRODUCTOS);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -18,9 +19,14 @@ export default function Products() {
           throw new Error(`Error ${response.status} al cargar los productos`);
         }
         const data = await response.json();
-        setProducts(Array.isArray(data) ? data : (data.data ?? []));
+        const items = Array.isArray(data) ? data : (data.data ?? []);
+        if (items.length > 0) {
+          setProducts(items);
+        }
       } catch (err) {
-        setError(err.message);
+        // Si el backend no está disponible, usamos el catálogo local
+        console.warn("Backend no disponible, usando catálogo local:", err.message);
+        setProducts(PRODUCTOS);
       } finally {
         setLoading(false);
       }
