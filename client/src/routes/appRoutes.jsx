@@ -1,3 +1,4 @@
+import Contact from "../pages/Contact";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Products from "../pages/Products";
@@ -17,6 +18,10 @@ export const appRoutes = [
   {
     path: "/product/:id",
     element: <ProductDetail />,
+  },
+  {
+    path: ROUTES.CONTACT,
+    element: <Contact />,
   },
   {
     path: ROUTES.LOGIN,

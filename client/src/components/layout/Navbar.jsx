@@ -99,12 +99,13 @@ export default function Navbar() {
                 </a>
               </li>
               <li>
-                <a
-                  href="/#contacto"
-                  onClick={(e) => handleNavClick(e, "#contacto")}
+                <Link
+                  to={ROUTES.CONTACT}
+                  onClick={closeMenu}
+                  className={location.pathname === ROUTES.CONTACT ? "active-link" : ""}
                 >
                   Contacto
-                </a>
+                </Link>
               </li>
               <li className="mobile-only-auth">
                 <Link
