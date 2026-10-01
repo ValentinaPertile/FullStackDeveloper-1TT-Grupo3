@@ -73,12 +73,22 @@ export default function Navbar() {
                 <Link
                   to={ROUTES.HOME}
                   onClick={(e) => handleNavClick(e, "#inicio")}
+                  className={location.pathname === ROUTES.HOME ? "active-link" : ""}
                 >
                   Inicio
                 </Link>
               </li>
               <li>
-                <Link to={ROUTES.PRODUCTS} onClick={closeMenu}>
+                <Link
+                  to={ROUTES.PRODUCTS}
+                  onClick={closeMenu}
+                  className={
+                    location.pathname === ROUTES.PRODUCTS ||
+                    location.pathname.startsWith("/product")
+                      ? "active-link"
+                      : ""
+                  }
+                >
                   Catálogo
                 </Link>
               </li>
