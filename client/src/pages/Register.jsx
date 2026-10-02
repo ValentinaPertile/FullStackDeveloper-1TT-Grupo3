@@ -2,35 +2,48 @@ import { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { ROUTES } from "../routes/paths";
 
-import { jwtDecode } from "jwt-decode";
-
 import AuthSection from "../components/auth/AuthSection";
 
 import auth_bg from "../assets/images/auth_bg.webp";
+import { register } from "../services/auth.api";
+
+import { useMutation } from "@tanstack/react-query";
 
 export default function Register() {
   const [params] = useSearchParams();
 
   const token = params.get("token");
 
-  let decoded = null;
-
-  if (token) {
-    decoded = jwtDecode(token);
-  }
-
   const [user, setUser] = useState({
-    email: token ? decoded.email : "",
+    email: "",
     password: "",
     confirmPassword: "",
     phone: "",
     dni: "",
   });
 
+  const mutation = useMutation({
+    mutationFn: ({ user, token }) => register(user, token),
+    onSuccess: (data) => {
+      console.log("Registro exitoso:", data);
+    },
+    onError: (error) => {
+      console.error("Error en el registro:", error);
+    },
+  });
+
+  const handleChanges = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    console.log(user);
+    if (!token && user.password !== user.confirmPassword) {
+      return console.log("Las contraseñas no coinciden");
+    }
+
+    mutation.mutate({ user, token });
   };
 
   return (
@@ -95,50 +108,58 @@ export default function Register() {
 
           {/* Formulario */}
           <form onSubmit={handleRegister} className="space-y-4">
-            <div>
-              <label className="block text-xs font-semibold text-[var(--tinta)] mb-1.5">
-                Correo electrónico
-              </label>
-              <input
-                type="email"
-                required
-                readOnly={token}
-                value={user.email}
-                onChange={(e) => setUser({ ...user, email: e.target.value })}
-                placeholder="ejemplo@correo.com"
-                className="w-full px-3.5 py-2.5 rounded-lg border border-stone-300 text-stone-900 text-sm placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[var(--siena)] focus:border-transparent transition-all"
-              />
-            </div>
+            {!token && (
+              <div>
+                <label className="block text-xs font-semibold text-[var(--tinta)] mb-1.5">
+                  Correo electrónico
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  value={user.email}
+                  onChange={(e) => handleChanges(e)}
+                  placeholder="ejemplo@correo.com"
+                  className="w-full px-3.5 py-2.5 rounded-lg border border-stone-300 text-stone-900 text-sm placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[var(--siena)] focus:border-transparent transition-all"
+                />
+              </div>
+            )}
 
             {!token && (
               <>
                 <div>
-                  <label className="block text-xs font-semibold text-[var(--tinta)] mb-1.5">
+                  <label
+                    htmlFor="password"
+                    className="block text-xs font-semibold text-[var(--tinta)] mb-1.5"
+                  >
                     Contraseña
                   </label>
                   <input
                     type="password"
+                    name="password"
                     required
+                    minLength={4}
                     value={user.password}
-                    onChange={(e) =>
-                      setUser({ ...user, password: e.target.value })
-                    }
+                    onChange={(e) => handleChanges(e)}
                     placeholder="••••••••"
                     className="w-full px-3.5 py-2.5 rounded-lg border border-stone-300 text-stone-900 text-sm placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[var(--siena)] focus:border-transparent transition-all"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-[var(--tinta)] mb-1.5">
+                  <label
+                    htmlFor="confirmPassword"
+                    className="block text-xs font-semibold text-[var(--tinta)] mb-1.5"
+                  >
                     Confirmar contraseña
                   </label>
                   <input
                     type="password"
+                    name="confirmPassword"
                     required
+                    minLength={4}
                     value={user.confirmPassword}
-                    onChange={(e) =>
-                      setUser({ ...user, confirmPassword: e.target.value })
-                    }
+                    onChange={(e) => handleChanges(e)}
                     placeholder="••••••••"
                     className="w-full px-3.5 py-2.5 rounded-lg border border-stone-300 text-stone-900 text-sm placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[var(--siena)] focus:border-transparent transition-all"
                   />
@@ -147,28 +168,36 @@ export default function Register() {
             )}
 
             <div>
-              <label className="block text-xs font-semibold text-[var(--tinta)] mb-1.5">
+              <label
+                htmlFor="phone"
+                className="block text-xs font-semibold text-[var(--tinta)] mb-1.5"
+              >
                 Teléfono
               </label>
               <input
                 type="tel"
+                name="phone"
                 required
                 value={user.phone}
-                onChange={(e) => setUser({ ...user, phone: e.target.value })}
+                onChange={(e) => handleChanges(e)}
                 placeholder="11-4567-8901"
                 className="w-full px-3.5 py-2.5 rounded-lg border border-stone-300 text-stone-900 text-sm placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[var(--siena)] focus:border-transparent transition-all"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[var(--tinta)] mb-1.5">
+              <label
+                htmlFor="dni"
+                className="block text-xs font-semibold text-[var(--tinta)] mb-1.5"
+              >
                 DNI
               </label>
               <input
                 type="number"
+                name="dni"
                 required
                 value={user.dni}
-                onChange={(e) => setUser({ ...user, dni: e.target.value })}
+                onChange={(e) => handleChanges(e)}
                 placeholder="12345678"
                 className="w-full px-3.5 py-2.5 rounded-lg border border-stone-300 text-stone-900 text-sm placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[var(--siena)] focus:border-transparent transition-all"
               />

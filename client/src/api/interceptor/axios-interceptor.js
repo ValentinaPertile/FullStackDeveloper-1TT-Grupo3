@@ -30,17 +30,14 @@ interceptor.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    const backendData = error.response?.data;
+    const response = error.response?.data;
 
-    console.log("backendData", backendData)
-    console.log("error.response", error.response)
-    console.log("error", error)
+    console.log("response", response);
     
     const normalizedError = {
       status: error.response?.status || 500,
       success: false,
-      message: backendData?.message || "Error inesperado",
-      error: backendData?.error || null,
+      error: response?.error || "Error inesperado",
     };
 
     return Promise.reject(normalizedError);

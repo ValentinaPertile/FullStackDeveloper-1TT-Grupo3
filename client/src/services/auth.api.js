@@ -8,8 +8,15 @@ export const login = async (email, password) => {
   return await interceptor.post("/auth/login", { email, password });
 };
 
-export const register = async (email, password, dni) => {
-  return await interceptor.post("/auth/register", { email, password, dni });
+export const register = async (user, token) => {
+  const payload = {
+    email: user.email || null,
+    password: user.password || null,
+    phone: user.phone || null,
+    dni: user.dni || null,
+  };
+
+  return await interceptor.post("/auth/register", { user: payload, token });
 };
 
 export const OAuth = async (provider) => {
