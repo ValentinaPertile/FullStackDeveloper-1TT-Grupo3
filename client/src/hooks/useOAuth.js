@@ -4,8 +4,9 @@ import { useEffect } from "react";
 import { OAuth } from "../services/auth.api";
 
 const oAuthActions = {
-  OAUTH_SUCCESS: () => {
-    console.log("Login exitoso!");
+  OAUTH_SUCCESS: (data, navigate) => {
+    console.log("Login OAuth exitoso!");
+    navigate(ROUTES.HOME);
   },
   OAUTH_REGISTER: (data, navigate) => {
     console.log("Redirigir a registro con token:", data);

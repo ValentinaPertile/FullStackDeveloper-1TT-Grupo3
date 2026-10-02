@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ROUTES } from "../../routes/paths";
 import { useCart } from "../../hooks/useCart";
+import { useAuth } from "../../hooks/useAuth";
 import Cart from "../Cart";
 
 export default function Navbar() {
   const { cartCount, openCart, closeCart } = useCart();
+  const { user, isAuthenticated, logout } = useAuth();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
@@ -123,42 +125,75 @@ export default function Navbar() {
                 </Link>
               </li>
               <li className="mobile-only-auth">
-                <Link
-                  to={ROUTES.LOGIN}
-                  onClick={closeMenu}
-                  className={isAuthPage ? "active-link" : ""}
-                >
-                  Iniciar sesión
-                </Link>
+                {isAuthenticated ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      logout();
+                      closeMenu();
+                    }}
+                    className="w-full text-left font-medium text-red-600 py-2 cursor-pointer"
+                  >
+                    Cerrar sesión ({user?.nombre || user?.email?.split("@")[0]})
+                  </button>
+                ) : (
+                  <Link
+                    to={ROUTES.LOGIN}
+                    onClick={closeMenu}
+                    className={isAuthPage ? "active-link" : ""}
+                  >
+                    Iniciar sesión
+                  </Link>
+                )}
               </li>
             </ul>
           </nav>
 
           <div className="site-header__actions">
-            <Link
-              to={ROUTES.LOGIN}
-              id="btn-login"
-              className={`btn btn--auth ${isAuthPage ? "is-active" : ""}`}
-              aria-label="Iniciar sesión"
-              onClick={closeMenu}
-            >
-              <svg
-                className="btn-icon"
-                viewBox="0 0 24 24"
-                width="16"
-                height="16"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
+            {isAuthenticated ? (
+              <div className="flex items-center gap-2">
+                <span
+                  className="hidden sm:inline-block text-xs font-medium text-stone-700 max-w-[120px] truncate"
+                  title={user?.email || "Usuario"}
+                >
+                  {user?.nombre || user?.email?.split("@")[0]}
+                </span>
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="btn btn--auth text-xs py-1.5 px-3 cursor-pointer"
+                  aria-label="Cerrar sesión"
+                  title="Cerrar sesión"
+                >
+                  Salir
+                </button>
+              </div>
+            ) : (
+              <Link
+                to={ROUTES.LOGIN}
+                id="btn-login"
+                className={`btn btn--auth ${isAuthPage ? "is-active" : ""}`}
+                aria-label="Iniciar sesión"
+                onClick={closeMenu}
               >
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-              <span>Ingresar</span>
-            </Link>
+                <svg
+                  className="btn-icon"
+                  viewBox="0 0 24 24"
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+                <span>Ingresar</span>
+              </Link>
+            )}
 
             <button
               type="button"

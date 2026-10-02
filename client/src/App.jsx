@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { appRoutes } from "./routes/appRoutes";
 
 import { CartProvider } from "./context/CartProvider";
+import { AuthProvider } from "./context/AuthProvider";
 import Layout from "./components/layout/Layout";
 
 // TanStack Query Client Setup
@@ -34,9 +35,11 @@ function App() {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <CartProvider>
-          <AppRoutesContent />
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <AppRoutesContent />
+          </CartProvider>
+        </AuthProvider>
       </QueryClientProvider>
     </BrowserRouter>
   );

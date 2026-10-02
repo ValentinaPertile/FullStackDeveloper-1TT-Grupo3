@@ -1,24 +1,47 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../routes/paths";
-
 import AuthSection from "../components/auth/AuthSection";
-
-
 import auth_bg from "../assets/images/auth_bg.webp";
 import { useOAuth } from "../hooks/useOAuth";
+import { useAuth } from "../hooks/useAuth";
+import { login as loginApi } from "../services/auth.api";
 
 export default function Login() {
   const { handleOAuth } = useOAuth();
+  const { login: authLogin } = useAuth();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [showPass, setShowPass] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login submitted:", { email, password });
+    setErrorMessage("");
+
+    if (!email.trim() || !password) {
+      setErrorMessage("Por favor, completá tu correo y contraseña.");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      const response = await loginApi(email.trim(), password);
+      authLogin(response?.data?.user || { email: email.trim() });
+      navigate(ROUTES.HOME);
+    } catch (err) {
+      console.error("Error en login:", err);
+      setErrorMessage(
+        err?.error ||
+          err?.message ||
+          "Credenciales incorrectas o error en el servidor.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -150,11 +173,18 @@ export default function Login() {
               </a>
             </div>
 
+            {errorMessage && (
+              <p className="text-xs text-red-600 font-medium text-center mb-2">
+                {errorMessage}
+              </p>
+            )}
+
             <button
               type="submit"
-              className="w-full py-3 px-4 bg-[var(--tinta)] hover:bg-[var(--siena)] text-[var(--alabastro)] font-semibold rounded-lg text-sm transition-colors shadow-md cursor-pointer mt-2"
+              disabled={submitting}
+              className="w-full py-3 px-4 bg-[var(--tinta)] hover:bg-[var(--siena)] text-[var(--alabastro)] font-semibold rounded-lg text-sm transition-colors shadow-md cursor-pointer mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Iniciar sesión
+              {submitting ? "Iniciando sesión..." : "Iniciar sesión"}
             </button>
           </form>
 

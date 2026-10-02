@@ -27,3 +27,8 @@ export const OAuth = async (provider) => {
       throw new Error("No se encontro el provider");
   }
 };
+
+export const logout = async () => {
+  return await interceptor.post("/auth/logout");
+};
+

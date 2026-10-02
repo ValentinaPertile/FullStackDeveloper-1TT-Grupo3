@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ROUTES } from "../routes/paths";
 
 import AuthSection from "../components/auth/AuthSection";
@@ -9,9 +9,12 @@ import { register } from "../services/auth.api";
 
 import { useMutation } from "@tanstack/react-query";
 import { useOAuth } from "../hooks/useOAuth";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Register() {
   const { handleOAuth } = useOAuth();
+  const { login: authLogin } = useAuth();
+  const navigate = useNavigate();
 
   const [params] = useSearchParams();
 
@@ -29,6 +32,8 @@ export default function Register() {
     mutationFn: ({ user, token }) => register(user, token),
     onSuccess: (data) => {
       console.log("Registro exitoso:", data);
+      authLogin(data?.data?.user || { email: user.email });
+      navigate(ROUTES.HOME);
     },
     onError: (error) => {
       console.error("Error en el registro:", error);
