@@ -8,6 +8,7 @@ export const ROUTES = {
   PRODUCT: (product_id) => `/product/${product_id}`,
 
   CONTACT: "/contacto",
+  CONTACT_ALT: "/contact",
 };
 
 export const OUT_AUTH = ["/login", "/register"];

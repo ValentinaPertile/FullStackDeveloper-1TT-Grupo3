@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 import { connectDB } from "./core/database/database.js";
 import { ErrorHandler } from "./core/middleware/error-handler.js";
 import { API_PREFIX, FRONTEND_URL, PORT } from "./core/config/config.js";
-import { Auth } from "./index.js";
+import { Auth, Contact } from "./index.js";
 
 import passport from "passport";
 
@@ -50,6 +50,8 @@ app.get(`${API_PREFIX}/health`, (req, res) => {
 });
 
 app.use(`${API_PREFIX}/auth`, Auth);
+app.use(`${API_PREFIX}/contact`, Contact);
+app.use(`${API_PREFIX}/contacto`, Contact);
 app.use(`${API_PREFIX}/productos`, productosRoutes);
 
 // Middleware de manejo de errores

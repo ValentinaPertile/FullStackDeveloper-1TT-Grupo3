@@ -1,28 +1,29 @@
 import { useState, useEffect } from "react";
+import { validateContact } from "../validation/contact.validation";
+import { sendContact } from "../services/contact.api";
+
+const initialForm = {
+  nombre: "",
+  email: "",
+  mensaje: "",
+};
+
+const initialErrors = {
+  nombre: "",
+  email: "",
+  mensaje: "",
+};
 
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    nombre: "",
-    email: "",
-    mensaje: "",
-  });
-
-  const [errors, setErrors] = useState({
-    nombre: "",
-    email: "",
-    mensaje: "",
-  });
-
+  const [formData, setFormData] = useState(initialForm);
+  const [errors, setErrors] = useState(initialErrors);
+  const [enviando, setEnviando] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     document.title = "Contacto — Hermanos Jota";
   }, []);
-
-  const validarEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,54 +33,46 @@ export default function Contact() {
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
+    if (successMessage) setSuccessMessage("");
+    if (errorMessage) setErrorMessage("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     setSuccessMessage("");
-    const newErrors = { nombre: "", email: "", mensaje: "" };
-    let esValido = true;
+    setErrorMessage("");
 
-    const valorNombre = formData.nombre.trim();
-    const valorEmail = formData.email.trim();
-    const valorMensaje = formData.mensaje.trim();
+    const valores = {
+      nombre: formData.nombre.trim(),
+      email: formData.email.trim(),
+      mensaje: formData.mensaje.trim(),
+    };
 
-    if (valorNombre === "") {
-      newErrors.nombre = "Por favor, ingresá tu nombre.";
-      esValido = false;
-    } else if (valorNombre.length < 3) {
-      newErrors.nombre = "El nombre debe tener al menos 3 caracteres.";
-      esValido = false;
-    }
+    const { valid, errors: nextErrors } = validateContact(valores);
+    setErrors(nextErrors);
 
-    if (valorEmail === "") {
-      newErrors.email = "Por favor, ingresá tu email.";
-      esValido = false;
-    } else if (!validarEmail(valorEmail)) {
-      newErrors.email = "Ingresá un formato de email válido (ej: nombre@correo.com).";
-      esValido = false;
-    }
+    if (!valid) return;
 
-    if (valorMensaje === "") {
-      newErrors.mensaje = "Por favor, escribí tu mensaje.";
-      esValido = false;
-    } else if (valorMensaje.length < 10) {
-      newErrors.mensaje = "El mensaje debe tener al menos 10 caracteres.";
-      esValido = false;
-    }
+    setEnviando(true);
 
-    setErrors(newErrors);
-
-    if (esValido) {
-      setSuccessMessage(
-        `¡Gracias por tu mensaje, ${valorNombre}! Nos pondremos en contacto a la brevedad.`
+    try {
+      const response = await sendContact(valores);
+      const msg =
+        response?.message ||
+        `¡Gracias por tu mensaje, ${valores.nombre}! Nos pondremos en contacto a la brevedad.`;
+      setSuccessMessage(msg);
+      setFormData(initialForm);
+      setErrors(initialErrors);
+    } catch (err) {
+      console.error("Error al enviar mensaje de contacto:", err);
+      setErrorMessage(
+        err?.error ||
+          err?.message ||
+          "Ocurrió un error al enviar el mensaje. Por favor, intentá nuevamente.",
       );
-      setFormData({
-        nombre: "",
-        email: "",
-        mensaje: "",
-      });
+    } finally {
+      setEnviando(false);
     }
   };
 
@@ -114,6 +107,7 @@ export default function Contact() {
                   onChange={handleChange}
                   placeholder="Tu nombre completo"
                   autoComplete="name"
+                  disabled={enviando}
                 />
                 <span className="error" id="error-nombre">
                   {errors.nombre}
@@ -130,6 +124,7 @@ export default function Contact() {
                   onChange={handleChange}
                   placeholder="tuemail@ejemplo.com"
                   autoComplete="email"
+                  disabled={enviando}
                 />
                 <span className="error" id="error-email">
                   {errors.email}
@@ -145,6 +140,7 @@ export default function Contact() {
                   value={formData.mensaje}
                   onChange={handleChange}
                   placeholder="Escribí tu consulta, requerimientos o medidas..."
+                  disabled={enviando}
                 ></textarea>
                 <span className="error" id="error-mensaje">
                   {errors.mensaje}
@@ -155,8 +151,9 @@ export default function Contact() {
                 type="submit"
                 id="btn-enviar"
                 className="btn btn--primary btn--submit"
+                disabled={enviando}
               >
-                Enviar Mensaje
+                {enviando ? "Enviando mensaje..." : "Enviar Mensaje"}
               </button>
             </form>
 
@@ -168,6 +165,17 @@ export default function Contact() {
                 aria-live="polite"
               >
                 {successMessage}
+              </div>
+            )}
+
+            {errorMessage && (
+              <div
+                id="mensaje-error"
+                className="mensaje-error visible"
+                role="alert"
+                aria-live="assertive"
+              >
+                {errorMessage}
               </div>
             )}
           </section>

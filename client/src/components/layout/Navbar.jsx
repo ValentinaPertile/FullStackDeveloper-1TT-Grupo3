@@ -112,7 +112,12 @@ export default function Navbar() {
                 <Link
                   to={ROUTES.CONTACT}
                   onClick={closeMenu}
-                  className={location.pathname === ROUTES.CONTACT ? "active-link" : ""}
+                  className={
+                    location.pathname === ROUTES.CONTACT ||
+                    location.pathname === ROUTES.CONTACT_ALT
+                      ? "active-link"
+                      : ""
+                  }
                 >
                   Contacto
                 </Link>
