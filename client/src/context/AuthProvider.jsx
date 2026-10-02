@@ -35,8 +35,29 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
+    let active = true;
+
+    getMe()
+      .then((response) => {
+        if (active && response?.data) {
+          setUser(response.data);
+          localStorage.setItem("auth_user", JSON.stringify(response.data));
+        }
+      })
+      .catch((err) => {
+        if (active && (err?.status === 401 || err?.status === 403)) {
+          setUser(null);
+          localStorage.removeItem("auth_user");
+        }
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   // Escuchar mensajes de login con OAuth (Google popup)
   useEffect(() => {

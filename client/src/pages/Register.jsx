@@ -28,27 +28,31 @@ export default function Register() {
     dni: "",
   });
 
+  const [error, setError] = useState("");
+
   const mutation = useMutation({
     mutationFn: ({ user, token }) => register(user, token),
     onSuccess: (data) => {
-      console.log("Registro exitoso:", data);
       authLogin(data?.data?.user || { email: user.email });
       navigate(ROUTES.HOME);
     },
-    onError: (error) => {
-      console.error("Error en el registro:", error);
+    onError: (err) => {
+      setError(err?.error || err?.message || "Error al completar el registro");
     },
   });
 
   const handleChanges = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
+    if (error) setError("");
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setError("");
 
     if (!token && user.password !== user.confirmPassword) {
-      return console.log("Las contraseñas no coinciden");
+      setError("Las contraseñas no coinciden");
+      return;
     }
 
     mutation.mutate({ user, token });
@@ -56,7 +60,6 @@ export default function Register() {
 
   return (
     <AuthSection>
-      {/** Componente central */}
       <div className="relative w-full max-w-md rounded-2xl p-3 sm:p-6 shadow-2xl overflow-hidden">
         <img
           src={auth_bg}
@@ -115,7 +118,12 @@ export default function Register() {
             </span>
           </div>
 
-          {/* Formulario */}
+          {error && (
+            <div className="mb-4 rounded-lg bg-red-50 border border-red-200 p-2.5 text-xs text-red-700">
+              {error}
+            </div>
+          )}
+
           <form onSubmit={handleRegister} className="space-y-4">
             {!token && (
               <div>

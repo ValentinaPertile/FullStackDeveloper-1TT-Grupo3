@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { formatPrice } from "../utils/formatPrice";
 import { useCart } from "../hooks/useCart";
 import { useAuth } from "../hooks/useAuth";
@@ -23,24 +23,24 @@ export default function Cart() {
   const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
-    nombre: "",
-    email: "",
-    telefono: "",
+    nombre: user?.nombre || "",
+    email: user?.email || "",
+    telefono: user?.phone || "",
     direccion: "",
     ciudad: "Buenos Aires",
   });
 
-  // Pre-cargar datos del usuario si está logueado
-  useEffect(() => {
+  const handleStartCheckout = () => {
     if (user) {
       setFormData((prev) => ({
         ...prev,
-        nombre: user.nombre || prev.nombre,
-        email: user.email || prev.email,
-        telefono: user.phone || prev.telefono,
+        nombre: prev.nombre || user.nombre || "",
+        email: prev.email || user.email || "",
+        telefono: prev.telefono || user.phone || "",
       }));
     }
-  }, [user]);
+    setIsCheckingOut(true);
+  };
 
   if (!isCartOpen) return null;
 
@@ -330,7 +330,7 @@ export default function Cart() {
                   </p>
                   <button
                     type="button"
-                    onClick={() => setIsCheckingOut(true)}
+                    onClick={handleStartCheckout}
                     className="w-full py-3 bg-[var(--tinta)] hover:bg-[var(--siena)] text-white font-medium rounded-lg text-sm transition-colors shadow-md cursor-pointer"
                   >
                     Finalizar Compra

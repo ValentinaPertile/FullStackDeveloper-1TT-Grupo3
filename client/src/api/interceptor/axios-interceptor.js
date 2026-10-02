@@ -32,8 +32,6 @@ interceptor.interceptors.response.use(
   (error) => {
     const response = error.response?.data;
 
-    console.log("response", response);
-    
     const normalizedError = {
       status: error.response?.status || 500,
       success: false,

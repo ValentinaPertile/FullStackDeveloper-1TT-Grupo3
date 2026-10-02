@@ -46,7 +46,6 @@ export default function Login() {
 
   return (
     <AuthSection>
-      {/** Componente central */}
       <div className="relative w-full max-w-md rounded-2xl p-3 sm:p-6 shadow-2xl overflow-hidden">
         <img
           src={auth_bg}

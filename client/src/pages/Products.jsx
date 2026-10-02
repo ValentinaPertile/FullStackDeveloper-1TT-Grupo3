@@ -8,7 +8,6 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 export default function Products() {
   const { addToCart } = useCart();
   const [products, setProducts] = useState(PRODUCTOS);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -47,7 +46,6 @@ export default function Products() {
     <main className="mx-auto max-w-6xl px-6 py-10">
       <h1 className="mb-8 font-display text-4xl">Nuestros productos</h1>
 
-      {loading && <p className="font-inter">Cargando productos...</p>}
       <ProductList products={products} onAddToCart={addToCart} />
     </main>
   );
