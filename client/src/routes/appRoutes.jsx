@@ -24,10 +24,6 @@ export const appRoutes = [
     element: <Contact />,
   },
   {
-    path: ROUTES.CONTACT_ALT,
-    element: <Contact />,
-  },
-  {
     path: ROUTES.LOGIN,
     element: <Login />,
   },

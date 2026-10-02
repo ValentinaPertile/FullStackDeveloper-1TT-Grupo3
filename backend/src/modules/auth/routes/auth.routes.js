@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/auth.controller.js";
 
-import { authSchema } from "../types/auth.schema.js";
+import { loginSchema, registerSchema } from "../types/auth.schema.js";
 import { validate } from "../../../core/middleware/validation.js";
 import { AuthService } from "../services/auth.service.js";
 import { isAuthenticated } from "../../../core/middleware/isAuthenticated.js";
@@ -85,8 +85,8 @@ router.get("/google/callback", (req, res, next) => {
 });
 
 // Auth local y sesión
-router.post("/login", validate(authSchema), controller.login);
-router.post("/register", validate(authSchema), controller.register);
+router.post("/login", validate(loginSchema), controller.login);
+router.post("/register", validate(registerSchema), controller.register);
 
 router.get("/me", isAuthenticated, async (req, res, next) => {
   try {

@@ -1,8 +1,9 @@
 import axios from "axios";
+import { API_URL } from "../config/config";
 
 // CONFIGURACION DEL INTERCEPTOR (manejo de peticiones y respuestas)
 export const interceptor = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000/api",
+    baseURL: API_URL || "http://localhost:3000/api",
     headers: {
         "Content-Type": "application/json"
     },

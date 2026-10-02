@@ -13,7 +13,7 @@ import { useAuth } from "../hooks/useAuth";
 
 export default function Register() {
   const { handleOAuth } = useOAuth();
-  const { login: authLogin } = useAuth();
+  const { refreshUser } = useAuth();
   const navigate = useNavigate();
 
   const [params] = useSearchParams();
@@ -32,8 +32,8 @@ export default function Register() {
 
   const mutation = useMutation({
     mutationFn: ({ user, token }) => register(user, token),
-    onSuccess: (data) => {
-      authLogin(data?.data?.user || { email: user.email });
+    onSuccess: async () => {
+      await refreshUser();
       navigate(ROUTES.HOME);
     },
     onError: (err) => {

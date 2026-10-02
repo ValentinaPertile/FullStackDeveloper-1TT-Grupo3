@@ -1,90 +1,64 @@
-import { createContext, useState, useEffect, useCallback } from "react";
-import { getMe, logout as apiLogout } from "../services/auth.api";
+import { createContext, useState, useEffect } from "react";
+import {
+  getMe,
+  login as authLogin,
+  logout as apiLogout,
+} from "../services/auth.api";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    try {
-      const stored = localStorage.getItem("auth_user");
-      return stored ? JSON.parse(stored) : null;
-    } catch {
-      return null;
-    }
-  });
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Sincronizar estado con backend si hay sesión activa
-  const checkAuth = useCallback(async () => {
-    try {
-      const response = await getMe();
-      if (response && response.data) {
-        setUser(response.data);
-        localStorage.setItem("auth_user", JSON.stringify(response.data));
-      }
-    } catch (err) {
-      // Si la cookie expiró o no es válida, limpiar usuario local
-      if (err?.status === 401 || err?.status === 403) {
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const user = await getMe();
+
+        console.log(user);
+        setUser(user);
+      } catch {
         setUser(null);
-        localStorage.removeItem("auth_user");
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
+    };
+    init();
+  }, []);
+
+  const login = async (email, password) => {
+    const response = await authLogin(email, password);
+
+    if (response.success) {
+      const user = await getMe();
+      setUser(user);
     }
-  }, []);
 
-  useEffect(() => {
-    let active = true;
+    return response;
+  };
 
-    getMe()
-      .then((response) => {
-        if (active && response?.data) {
-          setUser(response.data);
-          localStorage.setItem("auth_user", JSON.stringify(response.data));
-        }
-      })
-      .catch((err) => {
-        if (active && (err?.status === 401 || err?.status === 403)) {
-          setUser(null);
-          localStorage.removeItem("auth_user");
-        }
-      })
-      .finally(() => {
-        if (active) setLoading(false);
-      });
+  const logout = async () => {
+    try {
+      const response = await apiLogout();
 
-    return () => {
-      active = false;
-    };
-  }, []);
-
-  // Escuchar mensajes de login con OAuth (Google popup)
-  useEffect(() => {
-    const handleOAuthMessage = (event) => {
-      if (event.data?.type === "OAUTH_SUCCESS") {
-        checkAuth();
+      if (!response.success) {
+        throw new Error(response.error);
       }
-    };
-    window.addEventListener("message", handleOAuthMessage);
-    return () => window.removeEventListener("message", handleOAuthMessage);
-  }, [checkAuth]);
 
-  const loginUser = (userData) => {
-    setUser(userData);
-    if (userData) {
-      localStorage.setItem("auth_user", JSON.stringify(userData));
+      setUser(null);
+    } catch (err) {
+      console.warn("Error al cerrar sesión en el servidor:", err);
     }
   };
 
-  const logoutUser = async () => {
+  const refreshUser = async () => {
     try {
-      await apiLogout();
-    } catch (err) {
-      console.warn("Error al cerrar sesión en el servidor:", err);
-    } finally {
+      const user = await getMe();
+      setUser(user);
+    } catch {
       setUser(null);
-      localStorage.removeItem("auth_user");
     }
   };
 
@@ -92,9 +66,9 @@ export const AuthProvider = ({ children }) => {
     user,
     isAuthenticated: Boolean(user),
     loading,
-    login: loginUser,
-    logout: logoutUser,
-    refreshUser: checkAuth,
+    login,
+    logout,
+    refreshUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
