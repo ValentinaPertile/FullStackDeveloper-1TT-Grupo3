@@ -1,5 +1,6 @@
 import Home from "../pages/Home";
 import Products from "../pages/Products";
+import Contact from "../pages/Contact";
 import { ROUTES } from "./paths";
 
 export const appRoutes = [
@@ -10,5 +11,9 @@ export const appRoutes = [
   {
     path: ROUTES.PRODUCTS,
     element: <Products />,
+  },
+  {
+    path: ROUTES.CONTACT,
+    element: <Contact />,
   }
 ];

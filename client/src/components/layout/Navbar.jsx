@@ -90,12 +90,9 @@ export default function Navbar() {
                 </a>
               </li>
               <li>
-                <a
-                  href="/#contacto"
-                  onClick={(e) => handleNavClick(e, "#contacto")}
-                >
+                <Link to={ROUTES.CONTACT} onClick={closeMenu}>
                   Contacto
-                </a>
+                </Link>
               </li>
             </ul>
           </nav>

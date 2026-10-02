@@ -7,5 +7,5 @@ export const ROUTES = {
     PRODUCTS: "/products",
     PRODUCT: (product_id) => `/product/${product_id}`,
 
-    CONTACT: "/#contacto",
+    CONTACT: "/contact",
 }
