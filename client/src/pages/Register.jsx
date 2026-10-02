@@ -8,8 +8,11 @@ import auth_bg from "../assets/images/auth_bg.webp";
 import { register } from "../services/auth.api";
 
 import { useMutation } from "@tanstack/react-query";
+import { useOAuth } from "../hooks/useOAuth";
 
 export default function Register() {
+  const { handleOAuth } = useOAuth();
+
   const [params] = useSearchParams();
 
   const token = params.get("token");
@@ -74,6 +77,7 @@ export default function Register() {
           <div className="grid grid-cols-1 gap-3 mb-5">
             <button
               type="button"
+              onClick={() => handleOAuth("google")}
               className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg border border-stone-300 text-stone-700 font-medium text-xs hover:bg-stone-50 hover:border-stone-400 transition-all shadow-xs cursor-pointer"
             >
               <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
@@ -216,7 +220,7 @@ export default function Register() {
               type="submit"
               className="w-full py-3 px-4 bg-[var(--tinta)] hover:bg-[var(--siena)] text-[var(--alabastro)] font-semibold rounded-lg text-sm transition-colors shadow-md cursor-pointer mt-2"
             >
-              Iniciar sesión
+              Registrarse
             </button>
           </form>
 

@@ -42,7 +42,7 @@ export class AuthController {
     try {
       const { user, token } = req.body;
 
-      const newAccessToken = await this.authService.register(user, token);
+      const response = await this.authService.register(user, token);
 
       const cookieAge = 24 * 60 * 60 * 1000; // 1 Día
       const isProduction = NODE_ENV === "production";
@@ -55,9 +55,9 @@ export class AuthController {
         path: "/",
       };
 
-      console.log(`Registro exitoso. User: ${email}`);
+      console.log(`Registro exitoso. Email: ${response.user.email}`);
 
-      return res.cookie("accessToken", newAccessToken, cookieOptions).status(200).json({
+      return res.cookie("accessToken", response.token, cookieOptions).status(200).json({
         success: true,
         message: "Registro exitoso",
       });

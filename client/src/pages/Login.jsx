@@ -1,27 +1,15 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { ROUTES } from "../routes/paths";
 
 import AuthSection from "../components/auth/AuthSection";
-import { OAuth } from "../services/auth.api";
+
 
 import auth_bg from "../assets/images/auth_bg.webp";
-
-const oAuthActions = {
-  OAUTH_SUCCESS: () => {
-    console.log("Login exitoso!");
-  },
-  OAUTH_REGISTER: (data, navigate) => {
-    console.log("Redirigir a registro con token:", data);
-    navigate(ROUTES.REGISTER + "?token=" + data.data);
-  },
-  OAUTH_ERROR: (data) => {
-    console.error("Error devuelto por OAuth:", data);
-  },
-};
+import { useOAuth } from "../hooks/useOAuth";
 
 export default function Login() {
-  const navigate = useNavigate();
+  const { handleOAuth } = useOAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,38 +19,6 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Login submitted:", { email, password });
-  };
-
-  useEffect(() => {
-    const onMessage = (event) => {
-      if (!event.data || typeof event.data !== "object") return;
-
-      const type = event.data.type;
-      const handler = oAuthActions[type];
-
-      if (type && handler) {
-        console.log("Payload de data recibido:", event.data);
-        handler(event.data, navigate);
-      }
-    };
-
-    window.addEventListener("message", onMessage);
-
-    return () => {
-      window.removeEventListener("message", onMessage);
-    };
-  }, [navigate]);
-
-  const handleOAuth = async (provider) => {
-    try {
-      const response = await OAuth(provider);
-      console.log("URL de redirección OAuth:", response);
-
-      const features = "left=100,top=100,width=500,height=600";
-      window.open(response, "_blank", features);
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   return (

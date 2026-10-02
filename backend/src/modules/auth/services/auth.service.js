@@ -60,7 +60,7 @@ export class AuthService {
         throw new ErrorResponse("El email es requerido para el registro", 400);
       }
 
-      const existing = await this.getByEmail(email);
+      const existing = await User.findOne({ email });
 
       if (existing) {
         throw new ErrorResponse("El usuario ya se encuentra registrado", 409);
@@ -69,12 +69,16 @@ export class AuthService {
       const newUser = await User.create({
         email: email,
         password: token ? null : hashedPassword,
-        dni: user.dni || null,
-        phone: user.phone || null,
+        avatar_url: token ? decoded?.avatar_url : null,
+        dni: user.dni,
+        phone: user.phone,
         provider: token ? decoded?.provider || "GOOGLE" : "LOCAL",
       });
 
-      return createToken(newUser);
+      return {
+        user: newUser,
+        token: createToken(newUser),
+      };
     } catch (error) {
       if (error.code === 11000) {
         const field = Object.keys(error.keyPattern || error.keyValue)[0];
