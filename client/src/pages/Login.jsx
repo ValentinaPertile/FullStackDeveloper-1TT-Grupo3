@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ROUTES } from "../routes/paths";
 
@@ -33,27 +33,30 @@ export default function Login() {
     console.log("Login submitted:", { email, password });
   };
 
+  useEffect(() => {
+    const onMessage = (event) => {
+      if (!event.data || typeof event.data !== "object") return;
+
+      const type = event.data.type;
+      const handler = oAuthActions[type];
+
+      if (type && handler) {
+        console.log("Payload de data recibido:", event.data);
+        handler(event.data, navigate);
+      }
+    };
+
+    window.addEventListener("message", onMessage);
+
+    return () => {
+      window.removeEventListener("message", onMessage);
+    };
+  }, [navigate]);
+
   const handleOAuth = async (provider) => {
     try {
       const response = await OAuth(provider);
-
       console.log("URL de redirección OAuth:", response);
-
-      const onMessage = (event) => {
-        if (!event.data || typeof event.data !== "object") return;
-
-        console.log("Payload de data:", event.data);
-
-        const type = event.data.type;
-        const handler = oAuthActions[type];
-
-        if (type && handler) {
-          window.removeEventListener("message", onMessage);
-          handler(event.data, navigate);
-        }
-      };
-
-      window.addEventListener("message", onMessage);
 
       const features = "left=100,top=100,width=500,height=600";
       window.open(response, "_blank", features);
