@@ -18,8 +18,7 @@ const router = Router();
 const service = new AuthService();
 const controller = new AuthController(service);
 
-// 0. RUTA DE LOGIN GOOGLE
-// =========================================================
+// OAuth Google
 router.get(
   "/google",
   passport.authenticate("google", {
@@ -32,8 +31,6 @@ router.get(
 router.get("/google/callback", (req, res, next) => {
   passport.authenticate("google", { session: false }, (err, user, result, info) => {
     if (err) {
-      console.log("Error desde done(err):", err.message);
-
       return sendPopupResponse(res, {
         type: "OAUTH_ERROR",
         error: err.message || "Error de autenticación",
@@ -87,21 +84,13 @@ router.get("/google/callback", (req, res, next) => {
   })(req, res, next);
 });
 
-// 1. RUTA DE LOGIN
-// =========================================================
+// Auth local y sesión
 router.post("/login", validate(authSchema), controller.login);
-
-// 2. RUTA DE REGISTER
-// =========================================================
 router.post("/register", validate(authSchema), controller.register);
 
-// 3. RUTA DE USUARIO AUTENTICADO
-// =========================================================
 router.get("/me", isAuthenticated, async (req, res, next) => {
   try {
     const user_id = req.user.id;
-
-    // .select("-password") excluye el password directamente desde la base de datos
     const user = await User.findById(user_id).select("-password").lean();
 
     if (!user) {
@@ -121,8 +110,6 @@ router.get("/me", isAuthenticated, async (req, res, next) => {
   }
 });
 
-// 4. RUTA DE LOGOUT
-// =========================================================
 router.post("/logout", controller.logout);
 
 export default router;

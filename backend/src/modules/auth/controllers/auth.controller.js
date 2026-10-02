@@ -6,8 +6,7 @@ export class AuthController {
   constructor(authService = new AuthService()) {
     this.authService = authService;
   }
-  // LOGIN
-  // ============================================================
+
   login = async (req, res, next) => {
     try {
       const { email, password } = req.body;
@@ -25,8 +24,6 @@ export class AuthController {
         path: "/",
       };
 
-      console.log(`Login exitoso. User: ${email}`);
-
       return res.cookie("accessToken", token, cookieOptions).status(200).json({
         success: true,
         message: "Login exitoso",
@@ -36,8 +33,6 @@ export class AuthController {
     }
   };
 
-  // REGISTER
-  // ============================================================
   register = async (req, res, next) => {
     try {
       const { user, token } = req.body;
@@ -55,8 +50,6 @@ export class AuthController {
         path: "/",
       };
 
-      console.log(`Registro exitoso. Email: ${response.user.email}`);
-
       return res.cookie("accessToken", response.token, cookieOptions).status(200).json({
         success: true,
         message: "Registro exitoso",
@@ -66,8 +59,6 @@ export class AuthController {
     }
   };
 
-  // LOGOUT
-  // ============================================================
   logout = async (req, res, next) => {
     try {
       let token = null;

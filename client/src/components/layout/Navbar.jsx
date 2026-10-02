@@ -6,7 +6,7 @@ import { useAuth } from "../../hooks/useAuth";
 import Cart from "../Cart";
 
 export default function Navbar() {
-  const { cartCount, openCart, closeCart } = useCart();
+  const { cartCount, openCart } = useCart();
   const { user, isAuthenticated, logout } = useAuth();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,11 +15,6 @@ export default function Navbar() {
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
-
-  // Close mobile menu when route changes
-  useEffect(() => {
-    setIsMenuOpen(false);
-  }, [location.pathname]);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {

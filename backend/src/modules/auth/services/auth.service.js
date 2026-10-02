@@ -4,10 +4,6 @@ import { comparePassword, hashPassword } from "../../../shared/utils/hash.js";
 import { createToken, verifyToken } from "../../../shared/utils/jwt.js";
 
 export class AuthService {
-  constructor() {}
-
-  // OBTENER USUARIO POR EMAIL
-  // ============================================================
   async getByEmail(email) {
     const user = await User.findOne({ email });
 
@@ -17,12 +13,9 @@ export class AuthService {
     return user;
   }
 
-  // LOGIN
-  // ============================================================
   async login(email, password) {
     const user = await this.getByEmail(email);
 
-    // Validar contraseña
     const passwordMatch = user.password
       ? await comparePassword(password, user.password)
       : false;
@@ -38,8 +31,6 @@ export class AuthService {
     return createToken(user);
   }
 
-  // REGISTER
-  // ============================================================
   async register(user, token) {
     try {
       let decoded = null;
