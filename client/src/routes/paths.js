@@ -7,7 +7,7 @@ export const ROUTES = {
   PRODUCTS: "/products",
   PRODUCT: (product_id) => `/product/${product_id}`,
 
-  CONTACT: "/#contacto",
+  CONTACT: "/contacto",
 };
 
 export const OUT_AUTH = ["/login", "/register"];

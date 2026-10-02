@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { OUT_AUTH, ROUTES } from "../../routes/paths";
+import { ROUTES } from "../../routes/paths";
 import { useCart } from "../../hooks/useCart";
 import Cart from "../Cart";
 
@@ -13,6 +13,11 @@ export default function Navbar() {
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location.pathname]);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -38,9 +43,9 @@ export default function Navbar() {
     }
   };
 
-  if (OUT_AUTH.includes(location.pathname)) {
-    return null;
-  }
+  const isAuthPage =
+    location.pathname === ROUTES.LOGIN ||
+    location.pathname === ROUTES.REGISTER;
 
   return (
     <>
@@ -68,12 +73,22 @@ export default function Navbar() {
                 <Link
                   to={ROUTES.HOME}
                   onClick={(e) => handleNavClick(e, "#inicio")}
+                  className={location.pathname === ROUTES.HOME ? "active-link" : ""}
                 >
                   Inicio
                 </Link>
               </li>
               <li>
-                <Link to={ROUTES.PRODUCTS} onClick={closeMenu}>
+                <Link
+                  to={ROUTES.PRODUCTS}
+                  onClick={closeMenu}
+                  className={
+                    location.pathname === ROUTES.PRODUCTS ||
+                    location.pathname.startsWith("/product")
+                      ? "active-link"
+                      : ""
+                  }
+                >
                   Catálogo
                 </Link>
               </li>
@@ -94,17 +109,52 @@ export default function Navbar() {
                 </a>
               </li>
               <li>
-                <a
-                  href="/#contacto"
-                  onClick={(e) => handleNavClick(e, "#contacto")}
+                <Link
+                  to={ROUTES.CONTACT}
+                  onClick={closeMenu}
+                  className={location.pathname === ROUTES.CONTACT ? "active-link" : ""}
                 >
                   Contacto
-                </a>
+                </Link>
+              </li>
+              <li className="mobile-only-auth">
+                <Link
+                  to={ROUTES.LOGIN}
+                  onClick={closeMenu}
+                  className={isAuthPage ? "active-link" : ""}
+                >
+                  Iniciar sesión
+                </Link>
               </li>
             </ul>
           </nav>
 
           <div className="site-header__actions">
+            <Link
+              to={ROUTES.LOGIN}
+              id="btn-login"
+              className={`btn btn--auth ${isAuthPage ? "is-active" : ""}`}
+              aria-label="Iniciar sesión"
+              onClick={closeMenu}
+            >
+              <svg
+                className="btn-icon"
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+              <span>Ingresar</span>
+            </Link>
+
             <button
               type="button"
               id="btn-abrir-carrito"
@@ -135,7 +185,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {openCart && <Cart />}
+      <Cart />
 
       {/* Overlay de fondo para el menú móvil */}
       <div
