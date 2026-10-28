@@ -85,13 +85,7 @@ export default function Cart() {
       clearCart();
     } catch (err) {
       console.error("Error al procesar la compra:", err);
-      // Fallback amigable si el backend no estuviera respondiendo
-      setOrderSuccess({
-        _id: "HJ-" + Math.floor(100000 + Math.random() * 900000),
-        total_amount: total,
-        customer: { name: formData.nombre.trim() },
-      });
-      clearCart();
+      
     } finally {
       setLoading(false);
     }
