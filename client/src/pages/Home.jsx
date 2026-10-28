@@ -1,34 +1,33 @@
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { ROUTES } from "../routes/paths";
+import { API_URL } from "../api/config/config";
+import { formatPrice } from "../utils/formatPrice";
 
-const DESTACADOS = [
-  {
-    id: 1,
-    nombre: "Sillón Copacabana",
-    descripcion:
-      "Estructura en madera maciza de petiribí con tapizado en lino natural. Inspirado en el diseño moderno brasileño de los años 50.",
-    precio: "$310.000",
-    imagen: "/img/sillon_copacabana.webp",
-  },
-  {
-    id: 2,
-    nombre: "Mesa Comedor Pampa",
-    descripcion:
-      "Tablero continuo en lenga fueguina con uniones en cola de milano visibles. Acabado al aceite natural que resalta su veta única.",
-    precio: "$420.000",
-    imagen: "/img/mesa_comedor_pampa.webp",
-  },
-  {
-    id: 3,
-    nombre: "Aparador Uspallata",
-    descripcion:
-      "Tres cuerpos en roble criollo con puertas corredizas ranuradas y herrajes ocultos de latón macizo.",
-    precio: "$380.000",
-    imagen: "/img/aparador_uspallata.webp",
-  },
-];
+const MAX_DESTACADOS = 3;
+
+const fetchProducts = async () => {
+  const response = await fetch(`${API_URL}/productos`);
+  if (!response.ok) {
+    throw new Error("No se pudieron cargar los productos");
+  }
+  const data = await response.json();
+  return Array.isArray(data) ? data : (data.data ?? []);
+};
 
 export default function Home() {
+  const { data: products = [], isLoading, isError } = useQuery({
+    queryKey: ["productos"],
+    queryFn: fetchProducts,
+  });
+
+  // Productos marcados como destacados; si todavía no hay ninguno, los primeros del catálogo
+  const marcados = products.filter((p) => p.destacado);
+  const destacados = (marcados.length > 0 ? marcados : products).slice(
+    0,
+    MAX_DESTACADOS,
+  );
+
   return (
     <>
       {/* 1. Hero Banner */}
@@ -73,24 +72,41 @@ export default function Home() {
             Selección de nuestras creaciones más emblemáticas
           </p>
 
-          <div className="grilla-productos">
-            {DESTACADOS.map((item) => (
-              <article key={item.id} className="producto-card">
-                <img src={item.imagen} alt={item.nombre} loading="lazy" />
-                <div className="producto-info">
-                  <h3>{item.nombre}</h3>
-                  <p className="descripcion-breve">{item.descripcion}</p>
-                  <p className="precio">{item.precio}</p>
-                  <Link
-                    to={ROUTES.PRODUCT ? ROUTES.PRODUCT(item.id) : ROUTES.PRODUCTS}
-                    className="btn btn--ghost mt-auto text-center"
-                  >
-                    Ver detalle
-                  </Link>
-                </div>
-              </article>
-            ))}
-          </div>
+          {isLoading && (
+            <p className="subtitulo-seccion" role="status">
+              Cargando productos...
+            </p>
+          )}
+
+          {!isLoading && (isError || destacados.length === 0) && (
+            <p className="subtitulo-seccion">
+              No pudimos cargar los destacados en este momento.{" "}
+              <Link to={ROUTES.PRODUCTS} className="underline">
+                Ver el catálogo completo
+              </Link>
+            </p>
+          )}
+
+          {destacados.length > 0 && (
+            <div className="grilla-productos">
+              {destacados.map((item) => (
+                <article key={item._id} className="producto-card">
+                  <img src={item.image_url} alt={item.name} loading="lazy" />
+                  <div className="producto-info">
+                    <h3>{item.name}</h3>
+                    <p className="descripcion-breve">{item.description}</p>
+                    <p className="precio">{formatPrice(item.price)}</p>
+                    <Link
+                      to={ROUTES.PRODUCT(item._id)}
+                      className="btn btn--ghost mt-auto text-center"
+                    >
+                      Ver detalle
+                    </Link>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
