@@ -5,13 +5,11 @@ import cookieParser from "cookie-parser";
 import { connectDB } from "./core/database/database.js";
 import { ErrorHandler } from "./core/middleware/error-handler.js";
 import { API_PREFIX, FRONTEND_URL, PORT } from "./core/config/config.js";
-import { Auth, Contact, Orders } from "./index.js";
+import { Auth, Contact, Orders, Product } from "./index.js";
 
 import passport from "passport";
 
 import "./core/config/passport.js";
-
-import productosRoutes from "../routes/productos.routes.js";
 
 // Inicialización de aplicación
 const app = express();
@@ -25,7 +23,12 @@ app.use(
   cors({
     origin: origins,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Auth-Token", "X-Client-System"], // Headers Autorizados
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Auth-Token",
+      "X-Client-System",
+    ], // Headers Autorizados
     exposedHeaders: ["X-Auth-Token"], // Headers Expuestos a frontend
     credentials: true,
   }),
@@ -49,9 +52,16 @@ app.get(`${API_PREFIX}/health`, (req, res) => {
   });
 });
 
+// Middleware de logging personalizado
+app.use((req, res, next) => {
+  req.time = new Date(Date.now()).toString();
+  console.log(req.method, req.hostname, req.path, req.time);
+  next();
+});
+
 app.use(`${API_PREFIX}/auth`, Auth);
 app.use(`${API_PREFIX}/contact`, Contact);
-app.use(`${API_PREFIX}/productos`, productosRoutes);
+app.use(`${API_PREFIX}/product`, Product);
 app.use(`${API_PREFIX}/orders`, Orders);
 
 // Middleware de manejo de errores
