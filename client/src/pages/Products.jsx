@@ -1,24 +1,21 @@
 import { useEffect, useState } from "react";
 import ProductList from "../components/ProductList";
 import { useCart } from "../hooks/useCart";
-import { PRODUCTOS } from "../data/productos";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+import { API_URL } from "../api/config/config";
 
 export default function Products() {
   const { addToCart } = useCart();
-  const [products, setProducts] = useState(PRODUCTOS);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    let isMounted = true;
-
     const fetchProducts = async () => {
       try {
         const response = await fetch(`${API_URL}/productos`);
         if (response.ok) {
           const data = await response.json();
+
           const items = Array.isArray(data) ? data : (data.data ?? []);
-          if (isMounted && items.length > 0) {
+          if (items.length > 0) {
             setProducts(items);
             return;
           }
@@ -29,17 +26,9 @@ export default function Products() {
           err.message,
         );
       }
-
-      if (isMounted) {
-        setProducts(PRODUCTOS);
-      }
     };
 
     fetchProducts();
-
-    return () => {
-      isMounted = false;
-    };
   }, []);
 
   return (

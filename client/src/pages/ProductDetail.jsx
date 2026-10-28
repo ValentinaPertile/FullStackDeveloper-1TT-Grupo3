@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ROUTES } from "../routes/paths";
-import { PRODUCTOS } from "../data/productos";
 import { formatPrice } from "../utils/formatPrice";
 import { useCart } from "../hooks/useCart";
+import { API_URL } from "../api/config/config";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+import { PRODUCTOS } from "../../../backend/data/productos";
 
 export default function ProductDetail() {
   const { id } = useParams();

@@ -51,7 +51,6 @@ app.get(`${API_PREFIX}/health`, (req, res) => {
 
 app.use(`${API_PREFIX}/auth`, Auth);
 app.use(`${API_PREFIX}/contact`, Contact);
-app.use(`${API_PREFIX}/contacto`, Contact);
 app.use(`${API_PREFIX}/productos`, productosRoutes);
 app.use(`${API_PREFIX}/orders`, Orders);
 

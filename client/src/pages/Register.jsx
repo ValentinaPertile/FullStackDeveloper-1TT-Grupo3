@@ -13,7 +13,7 @@ import { useAuth } from "../hooks/useAuth";
 
 export default function Register() {
   const { handleOAuth } = useOAuth();
-  const { login: authLogin } = useAuth();
+  const { refreshUser } = useAuth();
   const navigate = useNavigate();
 
   const [params] = useSearchParams();
@@ -33,7 +33,7 @@ export default function Register() {
   const mutation = useMutation({
     mutationFn: ({ user, token }) => register(user, token),
     onSuccess: async () => {
-      const sessionUser = await authLogin();
+      const sessionUser = await refreshUser();
       if (!sessionUser) {
         setError(
           "Tu cuenta se creó, pero no se pudo iniciar la sesión. Verificá que tu navegador permita cookies e iniciá sesión.",

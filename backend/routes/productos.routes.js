@@ -1,5 +1,5 @@
 import express from "express";
-import productosLocal from "../data/productos.js";
+import { PRODUCTOS } from "../data/productos.js";
 import Product from "../src/core/models/Product.js";
 
 const router = express.Router();
@@ -37,14 +37,14 @@ router.get("/", async (req, res) => {
 
   // Fallback seguro con catálogo local en memoria
   if (filterCategory) {
-    const filtrados = productosLocal.filter((p) => {
+    const filtrados = PRODUCTOS.filter((p) => {
       const cat = (p.category || p.categoria || "").toLowerCase();
       return cat === filterCategory;
     });
     return res.json(filtrados);
   }
 
-  res.json(productosLocal);
+  res.json(PRODUCTOS);
 });
 
 /**
@@ -75,7 +75,7 @@ router.get("/:id", async (req, res) => {
     // Si falla consulta a Mongo, continúa con catálogo local
   }
 
-  const local = productosLocal.find((p) => {
+  const local = PRODUCTOS.find((p) => {
     const pId = String(p.id ?? "").toLowerCase();
     const pUnderscoreId = String(p._id ?? "").toLowerCase();
     return pId === searchId || pUnderscoreId === searchId;

@@ -5,7 +5,6 @@ import AuthSection from "../components/auth/AuthSection";
 import auth_bg from "../assets/images/auth_bg.webp";
 import { useOAuth } from "../hooks/useOAuth";
 import { useAuth } from "../hooks/useAuth";
-import { login as loginApi } from "../services/auth.api";
 
 export default function Login() {
   const { handleOAuth } = useOAuth();
@@ -15,6 +14,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPass, setShowPass] = useState(false);
+  
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -29,13 +29,13 @@ export default function Login() {
 
     setSubmitting(true);
     try {
-      await loginApi(email.trim(), password);
-      const sessionUser = await authLogin();
+      const sessionUser = await authLogin(email.trim(), password);
       if (!sessionUser) {
         throw new Error(
           "No se pudo iniciar la sesión. Verificá que tu navegador permita cookies e intentá de nuevo.",
         );
       }
+
       navigate(ROUTES.HOME);
     } catch (err) {
       console.error("Error en login:", err);
