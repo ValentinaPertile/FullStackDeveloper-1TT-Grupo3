@@ -15,10 +15,9 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const init = async () => {
       try {
-        const user = await getMe();
-
-        console.log(user);
-        setUser(user);
+        // /auth/me responde { success, data: user }
+        const response = await getMe();
+        setUser(response?.data || null);
       } catch {
         setUser(null);
       } finally {
@@ -28,15 +27,15 @@ export const AuthProvider = ({ children }) => {
     init();
   }, []);
 
+  // Devuelve el usuario de la sesión, o null si la cookie no quedó guardada
   const login = async (email, password) => {
     const response = await authLogin(email, password);
 
     if (response.success) {
-      const user = await getMe();
-      setUser(user);
+      return await refreshUser();
     }
 
-    return response;
+    return null;
   };
 
   const logout = async () => {
@@ -55,10 +54,13 @@ export const AuthProvider = ({ children }) => {
 
   const refreshUser = async () => {
     try {
-      const user = await getMe();
-      setUser(user);
+      const response = await getMe();
+      const sessionUser = response?.data || null;
+      setUser(sessionUser);
+      return sessionUser;
     } catch {
       setUser(null);
+      return null;
     }
   };
 

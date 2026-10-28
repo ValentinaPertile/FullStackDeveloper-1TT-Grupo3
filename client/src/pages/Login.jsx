@@ -29,7 +29,12 @@ export default function Login() {
 
     setSubmitting(true);
     try {
-      await authLogin(email.trim(), password);
+      const sessionUser = await authLogin(email.trim(), password);
+      if (!sessionUser) {
+        throw new Error(
+          "No se pudo iniciar la sesión. Verificá que tu navegador permita cookies e intentá de nuevo.",
+        );
+      }
 
       navigate(ROUTES.HOME);
     } catch (err) {
