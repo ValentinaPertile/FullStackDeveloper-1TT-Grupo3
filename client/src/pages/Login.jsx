@@ -29,8 +29,13 @@ export default function Login() {
 
     setSubmitting(true);
     try {
-      const response = await loginApi(email.trim(), password);
-      authLogin(response?.data?.user || { email: email.trim() });
+      await loginApi(email.trim(), password);
+      const sessionUser = await authLogin();
+      if (!sessionUser) {
+        throw new Error(
+          "No se pudo iniciar la sesión. Verificá que tu navegador permita cookies e intentá de nuevo.",
+        );
+      }
       navigate(ROUTES.HOME);
     } catch (err) {
       console.error("Error en login:", err);

@@ -5,30 +5,22 @@ import { getMe, logout as apiLogout } from "../services/auth.api";
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    try {
-      const stored = localStorage.getItem("auth_user");
-      return stored ? JSON.parse(stored) : null;
-    } catch {
-      return null;
-    }
-  });
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Sincronizar estado con backend si hay sesión activa
+  // Obtener usuario autenticado desde el backend validando la cookie de sesión (accessToken)
   const checkAuth = useCallback(async () => {
     try {
       const response = await getMe();
       if (response && response.data) {
         setUser(response.data);
-        localStorage.setItem("auth_user", JSON.stringify(response.data));
+        return response.data;
       }
-    } catch (err) {
-      // Si la cookie expiró o no es válida, limpiar usuario local
-      if (err?.status === 401 || err?.status === 403) {
-        setUser(null);
-        localStorage.removeItem("auth_user");
-      }
+      setUser(null);
+      return null;
+    } catch {
+      setUser(null);
+      return null;
     } finally {
       setLoading(false);
     }
@@ -41,17 +33,19 @@ export const AuthProvider = ({ children }) => {
       .then((response) => {
         if (active && response?.data) {
           setUser(response.data);
-          localStorage.setItem("auth_user", JSON.stringify(response.data));
+        } else if (active) {
+          setUser(null);
         }
       })
-      .catch((err) => {
-        if (active && (err?.status === 401 || err?.status === 403)) {
+      .catch(() => {
+        if (active) {
           setUser(null);
-          localStorage.removeItem("auth_user");
         }
       })
       .finally(() => {
-        if (active) setLoading(false);
+        if (active) {
+          setLoading(false);
+        }
       });
 
     return () => {
@@ -70,11 +64,11 @@ export const AuthProvider = ({ children }) => {
     return () => window.removeEventListener("message", handleOAuthMessage);
   }, [checkAuth]);
 
-  const loginUser = (userData) => {
-    setUser(userData);
+  const loginUser = async (userData) => {
     if (userData) {
-      localStorage.setItem("auth_user", JSON.stringify(userData));
+      setUser(userData);
     }
+    return await checkAuth();
   };
 
   const logoutUser = async () => {
@@ -84,7 +78,6 @@ export const AuthProvider = ({ children }) => {
       console.warn("Error al cerrar sesión en el servidor:", err);
     } finally {
       setUser(null);
-      localStorage.removeItem("auth_user");
     }
   };
 

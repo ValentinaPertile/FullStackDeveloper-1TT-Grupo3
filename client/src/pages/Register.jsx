@@ -32,8 +32,14 @@ export default function Register() {
 
   const mutation = useMutation({
     mutationFn: ({ user, token }) => register(user, token),
-    onSuccess: (data) => {
-      authLogin(data?.data?.user || { email: user.email });
+    onSuccess: async () => {
+      const sessionUser = await authLogin();
+      if (!sessionUser) {
+        setError(
+          "Tu cuenta se creó, pero no se pudo iniciar la sesión. Verificá que tu navegador permita cookies e iniciá sesión.",
+        );
+        return;
+      }
       navigate(ROUTES.HOME);
     },
     onError: (err) => {
