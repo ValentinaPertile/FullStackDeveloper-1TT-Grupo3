@@ -23,6 +23,7 @@
     "mongoose": "^9.10.1",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
+    "slugify": "^1.6.9",
     "zod": "^4.6.5"
   },
   "devDependencies": {

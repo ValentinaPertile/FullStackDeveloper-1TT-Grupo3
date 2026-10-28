@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 import { connectDB } from "../core/database/database.js";
 import Product from "../core/models/Product.js";
 import Category from "../core/models/Category.js";
-import productosData from "../../data/productos.js";
+import { PRODUCTOS } from "../../data/productos.js";
+import { sluglify } from "../shared/utils/sluglify.js";
 
 async function seedDatabase() {
   try {
@@ -15,37 +16,29 @@ async function seedDatabase() {
 
     // 1. Extraer y crear categorías únicas
     const categoriasUnicas = [
-      ...new Set(productosData.map((p) => p.category || p.categoria)),
+      ...new Set(PRODUCTOS.map((p) => p.category)),
     ];
     console.log("Categorías detectadas:", categoriasUnicas);
 
     const categoryMap = {};
-    for (const catName of categoriasUnicas) {
-      if (catName) {
-        const cat = await Category.create({ name: catName, products: [] });
-        categoryMap[catName] = cat._id;
+    for (const category of categoriasUnicas) {
+      if (category) {
+        const cat = await Category.create({ name: category, products: [] });
+        categoryMap[category] = cat._id;
       }
     }
 
     // 2. Insertar productos
-    const productosParaInsertar = productosData.map((p) => ({
-      slug: p.id || p._id,
-      name: p.name || p.nombre,
-      description: p.description || p.descripcionCorta,
-      longDescription: p.longDescription || p.descripcionLarga,
-      price: p.price || p.precio,
-      category: categoryMap[p.category || p.categoria] || p.category || p.categoria,
-      specs: p.specs || [],
-      stock: p.stock || 10,
-      image_url: p.image_url || p.imagen,
-      active: true,
+    const productos = PRODUCTOS.map((p) => ({
+      ...p,
+      slug: sluglify(p.name),
     }));
 
-    const productosInsertados = await Product.insertMany(productosParaInsertar);
-    console.log(`Se insertaron con éxito ${productosInsertados.length} productos en MongoDB.`);
+    const inserted = await Product.insertMany(productos);
+    console.log(`Se insertaron con éxito ${inserted.length} productos en MongoDB.`);
 
     // 3. Vincular productos a sus categorías
-    for (const prod of productosInsertados) {
+    for (const prod of inserted) {
       if (mongoose.Types.ObjectId.isValid(prod.category)) {
         await Category.findByIdAndUpdate(prod.category, {
           $push: { products: prod._id },
