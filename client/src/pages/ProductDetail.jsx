@@ -3,65 +3,37 @@ import { useParams, Link } from "react-router-dom";
 import { ROUTES } from "../routes/paths";
 import { formatPrice } from "../utils/formatPrice";
 import { useCart } from "../hooks/useCart";
-import { API_URL } from "../api/config/config";
 
-import { PRODUCTOS } from "../../../backend/data/productos";
+import { useQuery } from "@tanstack/react-query";
+import { getProductById } from "@/services/product.api.js";
 
 export default function ProductDetail() {
   const { id } = useParams();
   const { addToCart } = useCart();
 
-  const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
+
+  const { data: product, isLoading } = useQuery({
+    queryKey: ["product", id],
+    queryFn: async () => {
+      const response = await getProductById(id);
+      return response.data;
+    },
+    enabled: !!id,
+
+    refetchInterval: 20 * 60 * 1000,
+    staleTime: 0,
+    cacheTime: 20 * 60 * 1000,
+  });
+
+  console.log(product);
+
+
   const [cantidad, setCantidad] = useState(1);
   const [added, setAdded] = useState(false);
 
   useEffect(() => {
-    let isMounted = true;
-
-    const fetchProduct = async () => {
-      // Primero buscar en catálogo local para respuesta instantánea
-      const local = PRODUCTOS.find(
-        (p) => String(p._id) === String(id) || String(p.id) === String(id)
-      );
-
-      try {
-        const response = await fetch(`${API_URL}/productos/${id}`);
-        if (response.ok) {
-          const data = await response.json();
-          const item = data.data ?? data;
-          if (isMounted && item) {
-            setProduct({
-              ...item,
-              _id: item._id || item.id || id,
-              image_url: item.image_url || (item.imagen ? `/${item.imagen}` : local?.image_url),
-              longDescription: item.longDescription || item.descripcionLarga || item.description || local?.longDescription,
-              specs: item.specs || local?.specs || [],
-            });
-            setLoading(false);
-            return;
-          }
-        }
-      } catch (err) {
-        console.warn("API de producto no disponible, usando datos locales:", err.message);
-      }
-
-      if (isMounted) {
-        setProduct(local || null);
-        setLoading(false);
-      }
-    };
-
-    fetchProduct();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [id]);
-
-  useEffect(() => {
     if (product) {
-      document.title = `${product.name || product.nombre} — Hermanos Jota`;
+      document.title = `${product.name} — Hermanos Jota`;
     } else {
       document.title = "Producto — Hermanos Jota";
     }
@@ -86,7 +58,7 @@ export default function ProductDetail() {
     setCantidad((prev) => (prev > 1 ? prev - 1 : 1));
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <main className="wrap py-16 text-center">
         <p className="font-inter text-stone-600">Cargando producto…</p>
@@ -118,8 +90,8 @@ export default function ProductDetail() {
         {/* Imagen del producto */}
         <div className="detalle__imagen">
           <img
-            src={product.image_url || product.imagen}
-            alt={`${product.name} — ${product.category || "Hermanos Jota"}`}
+            src={product.image_url}
+            alt={`${product.name}`}
             loading="eager"
             fetchPriority="high"
           />
@@ -135,7 +107,7 @@ export default function ProductDetail() {
           <p className="detalle__precio">{formatPrice(product.price)}</p>
 
           <p className="detalle__descripcion">
-            {product.longDescription || product.description}
+            {product.longDescription}
           </p>
 
           {/* Especificaciones técnicas */}
