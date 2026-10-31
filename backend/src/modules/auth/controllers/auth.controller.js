@@ -50,10 +50,13 @@ export class AuthController {
         path: "/",
       };
 
-      return res.cookie("accessToken", response.token, cookieOptions).status(200).json({
-        success: true,
-        message: "Registro exitoso",
-      });
+      return res
+        .cookie("accessToken", response.token, cookieOptions)
+        .status(200)
+        .json({
+          success: true,
+          message: "Registro exitoso",
+        });
     } catch (error) {
       next(error);
     }
@@ -90,6 +93,31 @@ export class AuthController {
           success: true,
           message: "Logout exitoso",
         });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  me = async (req, res, next) => {
+    try {
+      const user = await this.authService.getProfile(req.user.id);
+
+      return res.status(200).json({
+        success: true,
+        data: {
+          _id: user._id,
+          email: user.email,
+          dni: user.dni,
+          phone: user.phone,
+          avatar_url: user.avatar_url,
+          provider: user.provider,
+          role: user.role,
+          isAdmin: user.role === "ADMIN",
+          active: user.active,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+        },
+      });
     } catch (error) {
       next(error);
     }

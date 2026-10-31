@@ -5,8 +5,6 @@ import { loginSchema, registerSchema } from "../types/auth.schema.js";
 import { validate } from "../../../core/middleware/validation.js";
 import { AuthService } from "../services/auth.service.js";
 import { isAuthenticated } from "../../../core/middleware/isAuthenticated.js";
-import { ErrorResponse } from "../../../core/errors/error-handler.js";
-import User from "../../../core/models/User.js";
 
 import passport from "../../../core/config/passport.js";
 import { createToken, signIn } from "../../../shared/utils/jwt.js";
@@ -88,27 +86,7 @@ router.get("/google/callback", (req, res, next) => {
 router.post("/login", validate(loginSchema), controller.login);
 router.post("/register", validate(registerSchema), controller.register);
 
-router.get("/me", isAuthenticated, async (req, res, next) => {
-  try {
-    const user_id = req.user.id;
-    const user = await User.findById(user_id).select("-password").lean();
-
-    if (!user) {
-      throw new ErrorResponse("Usuario no encontrado", 404);
-    }
-
-    if (!user.active) {
-      throw new ErrorResponse("Usuario inactivo", 403);
-    }
-
-    res.json({
-      success: true,
-      data: user,
-    });
-  } catch (error) {
-    next(error);
-  }
-});
+router.get("/me", isAuthenticated, controller.me);
 
 router.post("/logout", controller.logout);
 
