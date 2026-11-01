@@ -32,7 +32,7 @@ La aplicación integra navegación dinámica con React Router, gestión de estad
 
 ### 1. Frontend (`/client`)
 * **React 19 + Vite:** SPA de alto rendimiento con renderizado optimizado y Vite como empaquetador moderno.
-* **React Router v7:** Enrutamiento del lado del cliente con soporte de rutas dinámicas (`/product/:id`, `/contacto`, `/products`, `/login`, `/register`).
+* **React Router v7:** Enrutamiento del lado del cliente con rutas dinámicas (`/product/:id`, `/admin/productos/:id/editar`), rutas protegidas por rol con `ProtectedRoute` y página 404 para cualquier ruta inexistente.
 * **Tailwind CSS + Vanilla Design System:** Estilos con variables CSS de diseño de marca, tipografías Playfair Display e Inter y componentes adaptables para móviles.
 * **TanStack Query + Axios Interceptor:** Gestión de peticiones HTTP asíncronas con configuración centralizada de baseURL, credenciales y captura normalizada de errores.
 * **Context API:** 
@@ -82,7 +82,7 @@ La aplicación integra navegación dinámica con React Router, gestión de estad
    *(Verificar que `MONGODB_URI` apunte a tu base de datos local o de Atlas y que `JWT_SECRET` esté definido).*
 
 4. **(Opcional pero recomendado) Poblar la base de datos:**
-   Ejecutar el script de seeding para cargar las categorías y los 11 muebles del catálogo en MongoDB:
+   Ejecutar el script de seeding para cargar las categorías y los 11 muebles del catálogo en MongoDB (3 de ellos quedan marcados como destacados para el Home):
    ```bash
    npm run seed
    ```
@@ -172,6 +172,35 @@ Luego cerrar sesión y volver a iniciar, para que el JWT incluya el rol nuevo.
 
 ---
 
+## Rutas del Frontend
+
+| Ruta | Página | Acceso |
+| :--- | :--- | :--- |
+| `/` | Inicio, con los productos destacados traídos de la API | Público |
+| `/products` | Catálogo completo (acepta `?category=Living`) | Público |
+| `/product/:id` | Detalle de producto por slug (`useParams`) | Público |
+| `/contacto` | Formulario de contacto | Público |
+| `/login`, `/register` | Inicio de sesión y registro (local o Google) | Público |
+| `/admin/productos` | Panel de administración: tabla con Editar / Borrar | Solo ADMIN |
+| `/admin/productos/nuevo` | Formulario de alta de producto | Solo ADMIN |
+| `/admin/productos/:id/editar` | Mismo formulario, precargado con el producto (`useParams`) | Solo ADMIN |
+| `*` | Página 404 | Público |
+
+Las rutas `/admin/*` están envueltas en `ProtectedRoute`: sin sesión redirige a `/login` y con un usuario que no es admin redirige al inicio.
+
+### Cómo probar el CRUD de productos
+
+1. Levantar backend y frontend como se indica arriba y correr `npm run seed`.
+2. Registrarse desde `/register`.
+3. Convertir ese usuario en admin con `npm run make-admin -- tu@email.com` y volver a iniciar sesión.
+4. Entrar a **Admin** desde el menú (solo aparece para administradores):
+   * **Crear:** botón *Nuevo producto*. Las especificaciones se cargan una por línea (`Medidas: 45 × 35 cm`). Al guardar vuelve al panel con `useNavigate`.
+   * **Editar:** botón *Editar* en la fila del producto.
+   * **Borrar:** botón *Borrar*, con confirmación.
+5. Los cambios se ven al instante en `/products`, y los productos marcados como destacados aparecen en el inicio.
+
+---
+
 ## Matriz de Cumplimiento de Requerimientos Técnicos
 
 | Criterio | Implementación en el Proyecto | Archivos Principales |
@@ -179,7 +208,11 @@ Luego cerrar sesión y volver a iniciar, para que el JWT incluya el rol nuevo.
 | **Arquitectura Desacoplada** | Separación limpia entre SPA (React/Vite) y servidor API REST (Node/Express). | `/client`, `/backend` |
 | **Base de Datos NoSQL** | Modelado e indexación de colecciones con Mongoose (`Product`, `Category`, `User`, `Order`, `Contact`). | `backend/src/core/models/*.js` |
 | **Seed de Base de Datos** | Script automatizado para poblar categorías y catálogo artesanal en MongoDB. | `backend/src/scripts/seed.js` |
-| **Resiliencia & Fallback** | El backend responde siempre desde MongoDB (sin catálogo en memoria); el frontend conserva un catálogo local solo como respaldo visual si la API no responde. | `client/src/pages/Products.jsx`, `backend/src/modules/products/*` |
+| **Modelado y Conexión de BD** | Esquemas de Mongoose con validaciones e índices; `Product.category` referencia a `Category` (`ref`) y la categoría guarda sus productos. Conexión abstraída en un módulo y URI en `.env`. | `backend/src/core/models/*.js`, `backend/src/core/database/database.js` |
+| **API CRUD (MVC)** | `GET`, `POST`, `PUT` y `DELETE` de productos en módulo con routes / controller / service, validación con Zod y escritura protegida con `isAuthenticated` + `isAdmin`. | `backend/src/modules/products/*`, `backend/src/core/middleware/isAdmin.js` |
+| **Integración Frontend CRUD** | Panel con tabla de productos y borrado con confirmación; formulario único de alta/edición; los errores del backend se muestran en pantalla. | `client/src/pages/admin/*`, `client/src/services/products.api.js` |
+| **Ruteo Avanzado** | `useParams` en detalle y edición, `useNavigate` después de crear/editar, rutas protegidas por rol y 404. | `client/src/routes/*`, `client/src/components/ProtectedRoute.jsx` |
+| **Datos Siempre Reales** | El catálogo, el detalle y el Home se leen siempre de MongoDB; si la API no responde se muestra un mensaje claro en lugar de datos falsos, y el checkout no inventa órdenes. | `client/src/pages/*`, `client/src/components/Cart.jsx` |
 | **Autenticación Híbrida** | Login/Registro con JWT + soporte completo de Google OAuth 2.0 vía ventana popup. | `backend/src/modules/auth/*`, `client/src/hooks/useOAuth.js` |
 | **Estado Global** | Context API para carrito persistente (`CartProvider`) y sesión de usuario (`AuthProvider`). | `client/src/context/*.jsx` |
 | **Flujo Completo de Compra** | Drawer de carrito interactivo con formulario de checkout y generación de número de orden. | `client/src/components/Cart.jsx`, `backend/src/modules/orders/*` |
