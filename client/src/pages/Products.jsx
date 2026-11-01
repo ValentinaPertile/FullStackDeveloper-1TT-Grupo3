@@ -1,41 +1,62 @@
-import { useEffect, useState } from "react";
-import ProductList from "../components/ProductList";
 import { useCart } from "../hooks/useCart";
-import { API_URL } from "../api/config/config";
+import { useQuery } from "@tanstack/react-query";
+import { getProducts } from "@/services/products.api";
+import { useSearchParams } from "react-router-dom";
+import ProductCard from "@/components/ProductCard";
 
 export default function Products() {
   const { addToCart } = useCart();
-  const [products, setProducts] = useState([]);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch(`${API_URL}/productos`);
-        if (response.ok) {
-          const data = await response.json();
+  const [searchParams] = useSearchParams();
+  const category = searchParams.get("category");
 
-          const items = Array.isArray(data) ? data : (data.data ?? []);
-          if (items.length > 0) {
-            setProducts(items);
-            return;
-          }
-        }
-      } catch (err) {
-        console.warn(
-          "API de productos no disponible, usando catálogo local:",
-          err.message,
-        );
-      }
-    };
+  const {
+    data: products = [],
+    isLoading,
+    error,
+  } = useQuery({
+    // category en la key para que cambiar el filtro vuelva a pedir los productos
+    queryKey: ["products", category],
+    queryFn: async () => {
+      const response = await getProducts(category);
+      return response.data;
+    },
 
-    fetchProducts();
-  }, []);
+    staleTime: 1000 * 60 * 20,
+    gcTime: 1000 * 60 * 60,
+    retry: 3,
+  });
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-10">
       <h1 className="mb-8 font-display text-4xl">Nuestros productos</h1>
 
-      <ProductList products={products} onAddToCart={addToCart} />
+      {error && (
+        <div
+          className="p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+          role="alert"
+        >
+          <span className="font-medium">{error.message}</span>
+        </div>
+      )}
+
+      {!isLoading && products.length === 0 && (
+        <p className="text-center">No se encontraron productos</p>
+      )}
+
+      {isLoading ? (
+        <p className="text-center">Cargando productos...</p>
+      ) : (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {products.map((product) => (
+            <ProductCard
+              key={product._id}
+              product={product}
+              onAddToCart={addToCart}
+            />
+          ))}
+        </div>
+      )}
     </main>
   );
 }

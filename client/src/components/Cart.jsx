@@ -85,13 +85,13 @@ export default function Cart() {
       clearCart();
     } catch (err) {
       console.error("Error al procesar la compra:", err);
-      // Fallback amigable si el backend no estuviera respondiendo
-      setOrderSuccess({
-        _id: "HJ-" + Math.floor(100000 + Math.random() * 900000),
-        total_amount: total,
-        customer: { name: formData.nombre.trim() },
-      });
-      clearCart();
+      // Sin orden falsa: si el backend falla, se lo decimos al usuario y el carrito queda intacto.
+      // Errores 4xx traen un mensaje útil del backend; caída de red o 5xx, uno genérico.
+      setError(
+        err?.status && err.status < 500
+          ? err.error
+          : "No pudimos procesar tu compra. Intentá de nuevo en unos minutos.",
+      );
     } finally {
       setLoading(false);
     }

@@ -24,7 +24,12 @@ app.use(
   cors({
     origin: origins,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Auth-Token", "X-Client-System"], // Headers Autorizados
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "X-Auth-Token",
+      "X-Client-System",
+    ], // Headers Autorizados
     exposedHeaders: ["X-Auth-Token"], // Headers Expuestos a frontend
     credentials: true,
   }),
@@ -46,6 +51,13 @@ app.get(`${API_PREFIX}/health`, (req, res) => {
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
   });
+});
+
+// Middleware de logging personalizado
+app.use((req, res, next) => {
+  req.time = new Date(Date.now()).toString();
+  console.log(req.method, req.hostname, req.path, req.time);
+  next();
 });
 
 app.use(`${API_PREFIX}/auth`, Auth);
