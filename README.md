@@ -215,6 +215,6 @@ Las rutas `/admin/*` están envueltas en `ProtectedRoute`: sin sesión redirige 
 | **Datos Siempre Reales** | El catálogo, el detalle y el Home se leen siempre de MongoDB; si la API no responde se muestra un mensaje claro en lugar de datos falsos, y el checkout no inventa órdenes. | `client/src/pages/*`, `client/src/components/Cart.jsx` |
 | **Autenticación Híbrida** | Login/Registro con JWT + soporte completo de Google OAuth 2.0 vía ventana popup. | `backend/src/modules/auth/*`, `client/src/hooks/useOAuth.js` |
 | **Estado Global** | Context API para carrito persistente (`CartProvider`) y sesión de usuario (`AuthProvider`). | `client/src/context/*.jsx` |
-| **Flujo Completo de Compra** | Drawer de carrito interactivo con formulario de checkout y generación de número de orden. | `client/src/components/Cart.jsx`, `backend/src/modules/orders/*` |
+| **Flujo Completo de Compra** | Drawer de carrito interactivo con formulario de checkout; la orden se guarda en MongoDB. | `client/src/components/Cart.jsx`, `backend/src/modules/orders/*` |
 | **Validación Robusta** | Validación con Zod tanto en formularios del cliente como en middlewares del servidor. | `client/src/validation/*`, `backend/src/modules/contact/contact.validation.js` |
 | **Responsive & Accesibilidad** | Menú hamburguesa accesible (`aria-expanded`), variables de diseño y layout responsive. | `client/src/components/layout/Navbar.jsx`, `client/src/index.css` |
