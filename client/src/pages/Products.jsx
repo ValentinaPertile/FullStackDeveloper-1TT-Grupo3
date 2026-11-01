@@ -1,13 +1,13 @@
 import { useCart } from "../hooks/useCart";
 import { useQuery } from "@tanstack/react-query";
-import { getProducts } from "@/services/product.api";
+import { getProducts } from "@/services/products.api";
 import { useSearchParams } from "react-router-dom";
 import ProductCard from "@/components/ProductCard";
 
 export default function Products() {
   const { addToCart } = useCart();
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const category = searchParams.get("category");
 
   const {
@@ -15,17 +15,11 @@ export default function Products() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["products"],
+    // category en la key para que cambiar el filtro vuelva a pedir los productos
+    queryKey: ["products", category],
     queryFn: async () => {
-      try {
-        const response = await getProducts(category);
-
-        return response.data;
-      } catch (error) {
-        const errorMessage =
-          error.response?.data?.error || "Error al obtener los productos";
-        throw new Error(errorMessage, { cause: error });
-      }
+      const response = await getProducts(category);
+      return response.data;
     },
 
     staleTime: 1000 * 60 * 20,

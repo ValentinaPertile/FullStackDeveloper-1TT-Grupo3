@@ -5,12 +5,11 @@ import { formatPrice } from "../utils/formatPrice";
 import { useCart } from "../hooks/useCart";
 
 import { useQuery } from "@tanstack/react-query";
-import { getProductById } from "@/services/product.api.js";
+import { getProductById } from "@/services/products.api";
 
 export default function ProductDetail() {
   const { id } = useParams();
   const { addToCart } = useCart();
-
 
   const { data: product, isLoading } = useQuery({
     queryKey: ["product", id],
@@ -19,14 +18,8 @@ export default function ProductDetail() {
       return response.data;
     },
     enabled: !!id,
-
-    refetchInterval: 20 * 60 * 1000,
-    staleTime: 0,
-    cacheTime: 20 * 60 * 1000,
+    gcTime: 20 * 60 * 1000,
   });
-
-  console.log(product);
-
 
   const [cantidad, setCantidad] = useState(1);
   const [added, setAdded] = useState(false);

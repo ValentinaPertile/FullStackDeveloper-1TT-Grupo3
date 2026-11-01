@@ -88,4 +88,18 @@ export class AuthService {
       throw error;
     }
   }
+
+  async getProfile(userId) {
+    const user = await User.findById(userId).lean();
+
+    if (!user) {
+      throw new ErrorResponse("Usuario no encontrado", 404);
+    }
+
+    if (!user.active) {
+      throw new ErrorResponse("Usuario inactivo", 403);
+    }
+
+    return user;
+  }
 }

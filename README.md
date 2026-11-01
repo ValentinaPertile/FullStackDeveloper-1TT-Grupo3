@@ -43,7 +43,7 @@ La aplicación integra navegación dinámica con React Router, gestión de estad
 ### 2. Backend (`/backend`)
 * **Node.js + Express 5:** Servidor REST modularizado en arquitectura por capas (`core`, `modules`, `shared`).
 * **MongoDB + Mongoose:** Base de datos NoSQL con esquemas tipados y modelos relacionales:
-  * `Product`: Catálogo con campos `slug`, `specs`, `price`, `category`, `image_url` y `stock`.
+  * `Product`: Catálogo con campos `slug` unico, `specs`, `price`, `category` (referencia a `Category`), `destacado`, `image_url` y `stock`.
   * `Category`: Categorías de muebles asociadas a productos.
   * `User`: Usuarios con contraseñas hasheadas mediante `bcrypt` y flags de estado.
   * `Order`: Registro de órdenes de compra con ítems, totales, datos de envío y cliente.
@@ -125,10 +125,15 @@ La aplicación integra navegación dinámica con React Router, gestión de estad
 ## Endpoints de la API REST
 
 ### 1. Catálogo de Productos (`/api/productos`)
+
 | Método | Endpoint | Descripción | Acceso |
 | :--- | :--- | :--- | :--- |
-| `GET` | `/api/productos` | Obtiene el catálogo completo. Soporta filtro opcional: `?categoria=Living` o `?category=Living`. | Público |
+| `GET` | `/api/productos` | Obtiene el catálogo activo. Soporta filtro opcional: `?categoria=Living` o `?category=Living`. | Público |
 | `GET` | `/api/productos/:id` | Obtiene el detalle de un producto por ID o slug (ej: `aconcagua`). | Público |
+| `POST` | `/api/productos` | Crea un producto. Body validado con Zod; `category` acepta ObjectId o nombre. | Solo ADMIN |
+| `PUT` | `/api/productos/:id` | Actualiza parcialmente un producto por ID o slug. | Solo ADMIN |
+| `DELETE` | `/api/productos/:id` | Elimina el producto y lo desasocia de su categoría. | Solo ADMIN |
+
 
 ### 2. Autenticación de Usuarios (`/api/auth`)
 | Método | Endpoint | Descripción | Acceso |
@@ -136,7 +141,7 @@ La aplicación integra navegación dinámica con React Router, gestión de estad
 | `POST` | `/api/auth/register` | Registra un nuevo usuario y genera cookie de sesión JWT. | Público |
 | `POST` | `/api/auth/login` | Inicia sesión con email y contraseña. | Público |
 | `GET` | `/api/auth/google` | Inicia el flujo de autenticación con Google OAuth 2.0. | Público |
-| `GET` | `/api/auth/me` | Obtiene los datos del usuario autenticado actual. | Autenticado |
+| `GET` | `/api/auth/me` | Devuelve el perfil del usuario autenticado, incluyendo `role` e `isAdmin`. | Autenticado |
 | `POST` | `/api/auth/logout` | Cierra la sesión y destruye la cookie de autenticación. | Público |
 
 ### 3. Contacto y Consultas (`/api/contact` o `/api/contacto`)
@@ -151,6 +156,20 @@ La aplicación integra navegación dinámica con React Router, gestión de estad
 | `POST` | `/api/orders` | Crea una nueva orden de compra desde el carrito (soporta usuarios e invitados). | Público |
 | `GET` | `/api/orders` | Lista las órdenes de compra asociadas. | Autenticado |
 
+### 5. Roles y permisos
+| Rol | Permisos |
+| :--- | :--- |
+| `USER` (default) | Ver catálogo, comprar y consultar su propio perfil. |
+| `ADMIN` | Todo lo anterior + crear, editar y eliminar productos. |
+
+
+Para promover un usuario a administrador:
+  ```bash
+    cd backend
+    npm run make-admin -- email@dominio.com
+  ```
+Luego cerrar sesión y volver a iniciar, para que el JWT incluya el rol nuevo.
+
 ---
 
 ## Matriz de Cumplimiento de Requerimientos Técnicos
@@ -160,7 +179,7 @@ La aplicación integra navegación dinámica con React Router, gestión de estad
 | **Arquitectura Desacoplada** | Separación limpia entre SPA (React/Vite) y servidor API REST (Node/Express). | `/client`, `/backend` |
 | **Base de Datos NoSQL** | Modelado e indexación de colecciones con Mongoose (`Product`, `Category`, `User`, `Order`, `Contact`). | `backend/src/core/models/*.js` |
 | **Seed de Base de Datos** | Script automatizado para poblar categorías y catálogo artesanal en MongoDB. | `backend/src/scripts/seed.js` |
-| **Resiliencia & Fallback** | El frontend y los endpoints responden con catálogo local si la base de datos no está disponible. | `client/src/pages/Products.jsx`, `backend/routes/productos.routes.js` |
+| **Resiliencia & Fallback** | El backend responde siempre desde MongoDB (sin catálogo en memoria); el frontend conserva un catálogo local solo como respaldo visual si la API no responde. | `client/src/pages/Products.jsx`, `backend/src/modules/products/*` |
 | **Autenticación Híbrida** | Login/Registro con JWT + soporte completo de Google OAuth 2.0 vía ventana popup. | `backend/src/modules/auth/*`, `client/src/hooks/useOAuth.js` |
 | **Estado Global** | Context API para carrito persistente (`CartProvider`) y sesión de usuario (`AuthProvider`). | `client/src/context/*.jsx` |
 | **Flujo Completo de Compra** | Drawer de carrito interactivo con formulario de checkout y generación de número de orden. | `client/src/components/Cart.jsx`, `backend/src/modules/orders/*` |

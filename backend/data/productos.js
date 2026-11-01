@@ -1,5 +1,6 @@
 export const PRODUCTOS = [
   {
+    _id: "aconcagua",
     name: "Mesa de Noche Aconcagua",
     price: 500000,
     category: "Dormitorio",
@@ -33,6 +34,7 @@ export const PRODUCTOS = [
     ],
   },
   {
+    _id: "patagonia",
     name: "Sofá Patagonia",
     price: 900000,
     category: "Living",
@@ -66,6 +68,7 @@ export const PRODUCTOS = [
     ],
   },
   {
+    _id: "pampa",
     name: "Mesa Comedor Pampa",
     price: 980000,
     category: "Comedor",
@@ -99,6 +102,7 @@ export const PRODUCTOS = [
     ],
   },
   {
+    _id: "cordoba",
     name: "Sillas Córdoba",
     price: 300000,
     category: "Comedor",
@@ -132,6 +136,7 @@ export const PRODUCTOS = [
     ],
   },
   {
+    _id: "costa",
     name: "Escritorio Costa",
     price: 780000,
     category: "Oficina",
@@ -165,6 +170,7 @@ export const PRODUCTOS = [
     ],
   },
   {
+    _id: "belgrano",
     name: "Silla de Trabajo Belgrano",
     price: 245000,
     category: "Oficina",
@@ -198,6 +204,7 @@ export const PRODUCTOS = [
     ],
   },
   {
+    _id: "uspallata",
     name: "Aparador Uspallata",
     price: 400000,
     category: "Living",
@@ -231,6 +238,7 @@ export const PRODUCTOS = [
     ],
   },
   {
+    _id: "recoleta",
     name: "Biblioteca Recoleta",
     price: 232000,
     category: "Living",
@@ -264,6 +272,7 @@ export const PRODUCTOS = [
     ],
   },
   {
+    _id: "mendoza",
     name: "Butaca Mendoza",
     price: 290000,
     category: "Living",
@@ -297,6 +306,7 @@ export const PRODUCTOS = [
     ],
   },
   {
+    _id: "copacabana",
     name: "Sillón Copacabana",
     price: 580000,
     category: "Living",
@@ -330,6 +340,7 @@ export const PRODUCTOS = [
     ],
   },
   {
+    _id: "araucaria",
     name: "Mesa de Centro Araucaria",
     price: 240000,
     category: "Living",
