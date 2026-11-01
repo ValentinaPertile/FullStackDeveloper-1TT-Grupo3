@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../../core/config/config.js";
 
 function encodeRole(role) {
-  return role === "USER" ? "u" : "a";
+  return role === "ADMIN" ? "a" : "u";
 }
 
 export function createToken(user) {
