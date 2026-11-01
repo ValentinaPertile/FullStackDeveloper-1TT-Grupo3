@@ -12,6 +12,9 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
 
+  // El link "Admin" solo se muestra a usuarios con rol admin (sin distinguir mayúsculas)
+  const isAdmin = user?.role?.toUpperCase() === "ADMIN";
+
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
@@ -119,6 +122,19 @@ export default function Navbar() {
                   Contacto
                 </Link>
               </li>
+              {isAdmin && (
+                <li>
+                  <Link
+                    to={ROUTES.ADMIN_PRODUCTS}
+                    onClick={closeMenu}
+                    className={
+                      location.pathname.startsWith("/admin") ? "active-link" : ""
+                    }
+                  >
+                    Admin
+                  </Link>
+                </li>
+              )}
               <li className="mobile-only-auth">
                 {isAuthenticated ? (
                   <button
