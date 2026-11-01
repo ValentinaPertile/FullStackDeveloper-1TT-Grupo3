@@ -7,6 +7,9 @@ const ProductSchema = new Schema(
     slug: {
       type: String,
       trim: true,
+      lowercase: true,
+      unique: true,
+      sparse: true,
       index: true,
     },
     name: {
@@ -29,8 +32,10 @@ const ProductSchema = new Schema(
       min: 0,
     },
     category: {
-      type: Schema.Types.Mixed,
+      type: Schema.Types.ObjectId,
+      ref: "Category",
       required: true,
+      index: true,
     },
     specs: {
       type: Array,
@@ -45,6 +50,11 @@ const ProductSchema = new Schema(
     image_url: {
       type: String,
       required: true,
+    },
+    destacado: {
+      type: Boolean,
+      default: false,
+      index: true,
     },
     active: {
       type: Boolean,
