@@ -40,5 +40,3 @@ export const remove = async (id) => {
   });
   return res.json();
 };
-
-export { remove as deleteProduct, remove as delete };

@@ -55,8 +55,8 @@ export class OrderController {
 
   list = async (req, res, next) => {
     try {
-      const filter = req.user ? { user: req.user._id || req.user.id } : {};
-      const orders = await this.orderService.getAll(filter);
+      // La ruta es solo para ADMIN, que ve todas las órdenes
+      const orders = await this.orderService.getAll();
 
       return res.status(200).json({
         success: true,

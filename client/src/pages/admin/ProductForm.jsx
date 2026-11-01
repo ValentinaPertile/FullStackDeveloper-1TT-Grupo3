@@ -37,7 +37,8 @@ export default function ProductForm() {
   });
 
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(isEdit);
+  const [loading, setLoading] = useState(isEdit); // cargando el producto a editar
+  const [saving, setSaving] = useState(false); // enviando el formulario
 
   useEffect(() => {
     if (!isEdit) return;
@@ -87,7 +88,7 @@ export default function ProductForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setLoading(true);
+    setSaving(true);
 
     const payload = { ...formData, specs: textToSpecs(formData.specs) };
 
@@ -98,14 +99,14 @@ export default function ProductForm() {
 
       if (res && res.success === false) {
         setError(res.error || "Ocurrió un error al guardar el producto");
-        setLoading(false);
+        setSaving(false);
         return;
       }
 
       navigate(ROUTES.ADMIN_PRODUCTS);
     } catch {
       setError("Error al conectar con el servidor");
-      setLoading(false);
+      setSaving(false);
     }
   };
 
@@ -286,14 +287,16 @@ export default function ProductForm() {
         <div className="mt-4 flex gap-3">
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || saving}
             className="rounded bg-stone-900 px-5 py-2.5 text-white hover:bg-stone-800 disabled:opacity-50"
           >
-            {loading
+            {saving
               ? "Guardando..."
-              : isEdit
-                ? "Guardar cambios"
-                : "Crear producto"}
+              : loading
+                ? "Cargando..."
+                : isEdit
+                  ? "Guardar cambios"
+                  : "Crear producto"}
           </button>
           <button
             type="button"

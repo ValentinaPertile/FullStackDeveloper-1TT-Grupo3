@@ -2,19 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../routes/paths";
 import { formatPrice } from "../../utils/formatPrice";
-import { interceptor } from "../../api/interceptor/axios-interceptor";
-import { API_URL } from "../../api/config/config";
-
-async function deleteProduct(id) {
-  try {
-    await interceptor.delete(`/productos/${id}`);
-  } catch (err) {
-    // El interceptor ya normaliza el error a { status, success, error }
-    throw new Error(err?.error || "No se pudo borrar el producto", {
-      cause: err,
-    });
-  }
-}
+import { getProducts, remove } from "../../services/products.api";
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
@@ -25,14 +13,8 @@ export default function AdminProducts() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${API_URL}/productos`);
-        if (!response.ok) {
-          throw new Error(`Error ${response.status} al cargar los productos`);
-        }
-        const data = await response.json();
-        const list = Array.isArray(data) ? data : (data.data ?? []);
-        // Por las dudas, no mostramos productos inactivos (active = false)
-        setProducts(list.filter((p) => p.active !== false));
+        const response = await getProducts();
+        setProducts(response.data ?? []);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -49,10 +31,14 @@ export default function AdminProducts() {
     setDeletingId(product._id);
     setError(null);
     try {
-      await deleteProduct(product._id);
+      const res = await remove(product._id);
+      if (res?.success === false) {
+        setError(res.error || "No se pudo borrar el producto");
+        return;
+      }
       setProducts((prev) => prev.filter((p) => p._id !== product._id));
-    } catch (err) {
-      setError(err.message);
+    } catch {
+      setError("Error al conectar con el servidor");
     } finally {
       setDeletingId(null);
     }
