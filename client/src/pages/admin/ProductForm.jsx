@@ -1,6 +1,23 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { create, update, getProductById } from "../../services/products.api";
+import { ROUTES } from "../../routes/paths";
+
+// Las specs se guardan como [{ label, valor }]; en el form se editan una por línea ("Medidas: 45 × 35 cm")
+const specsToText = (specs) =>
+  Array.isArray(specs)
+    ? specs.map((s) => `${s.label}: ${s.valor}`).join("\n")
+    : "";
+
+const textToSpecs = (text) =>
+  text
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .map((line) => {
+      const [label, ...rest] = line.split(":");
+      return { label: label.trim(), valor: rest.join(":").trim() };
+    });
 
 export default function ProductForm() {
   const { id } = useParams();
@@ -38,7 +55,7 @@ export default function ProductForm() {
           category: prod.category?._id || prod.category || "",
           stock: prod.stock ?? 0,
           image_url: prod.image_url || "",
-          specs: prod.specs || "",
+          specs: specsToText(prod.specs),
           destacado: Boolean(prod.destacado),
         });
       })
@@ -72,10 +89,12 @@ export default function ProductForm() {
     setError("");
     setLoading(true);
 
+    const payload = { ...formData, specs: textToSpecs(formData.specs) };
+
     try {
       const res = isEdit
-        ? await update(id, formData)
-        : await create(formData);
+        ? await update(id, payload)
+        : await create(payload);
 
       if (res && res.success === false) {
         setError(res.error || "Ocurrió un error al guardar el producto");
@@ -83,7 +102,7 @@ export default function ProductForm() {
         return;
       }
 
-      navigate("/admin/productos");
+      navigate(ROUTES.ADMIN_PRODUCTS);
     } catch {
       setError("Error al conectar con el servidor");
       setLoading(false);
@@ -104,10 +123,14 @@ export default function ProductForm() {
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         <div>
-          <label className="mb-1 block text-sm font-medium text-stone-700">
+          <label
+            htmlFor="name"
+            className="mb-1 block text-sm font-medium text-stone-700"
+          >
             Nombre del producto
           </label>
           <input
+            id="name"
             type="text"
             name="name"
             value={formData.name}
@@ -118,10 +141,14 @@ export default function ProductForm() {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-stone-700">
+          <label
+            htmlFor="description"
+            className="mb-1 block text-sm font-medium text-stone-700"
+          >
             Descripción corta
           </label>
           <input
+            id="description"
             type="text"
             name="description"
             value={formData.description}
@@ -132,10 +159,14 @@ export default function ProductForm() {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-stone-700">
+          <label
+            htmlFor="longDescription"
+            className="mb-1 block text-sm font-medium text-stone-700"
+          >
             Descripción larga
           </label>
           <textarea
+            id="longDescription"
             name="longDescription"
             value={formData.longDescription}
             onChange={handleChange}
@@ -146,10 +177,14 @@ export default function ProductForm() {
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
-            <label className="mb-1 block text-sm font-medium text-stone-700">
+            <label
+              htmlFor="price"
+              className="mb-1 block text-sm font-medium text-stone-700"
+            >
               Precio
             </label>
             <input
+              id="price"
               type="number"
               name="price"
               value={formData.price}
@@ -162,10 +197,14 @@ export default function ProductForm() {
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-stone-700">
+            <label
+              htmlFor="stock"
+              className="mb-1 block text-sm font-medium text-stone-700"
+            >
               Stock
             </label>
             <input
+              id="stock"
               type="number"
               name="stock"
               value={formData.stock}
@@ -178,10 +217,14 @@ export default function ProductForm() {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-stone-700">
+          <label
+            htmlFor="category"
+            className="mb-1 block text-sm font-medium text-stone-700"
+          >
             Categoría
           </label>
           <input
+            id="category"
             type="text"
             name="category"
             value={formData.category}
@@ -192,27 +235,39 @@ export default function ProductForm() {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-stone-700">
+          <label
+            htmlFor="image_url"
+            className="mb-1 block text-sm font-medium text-stone-700"
+          >
             URL de la imagen
           </label>
+          {/* text y no url: las imágenes del catálogo son rutas relativas (/img/...) */}
           <input
-            type="url"
+            id="image_url"
+            type="text"
             name="image_url"
             value={formData.image_url}
             onChange={handleChange}
+            required
+            placeholder="/img/mi_producto.webp o https://..."
             className="w-full rounded border border-stone-300 px-3 py-2"
           />
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-stone-700">
-            Especificaciones (Specs)
+          <label
+            htmlFor="specs"
+            className="mb-1 block text-sm font-medium text-stone-700"
+          >
+            Especificaciones (una por línea)
           </label>
           <textarea
+            id="specs"
             name="specs"
             value={formData.specs}
             onChange={handleChange}
-            rows="2"
+            rows="4"
+            placeholder={"Medidas: 45 × 35 × 60 cm\nMateriales: Roble macizo FSC®"}
             className="w-full rounded border border-stone-300 px-3 py-2"
           />
         </div>
@@ -242,7 +297,7 @@ export default function ProductForm() {
           </button>
           <button
             type="button"
-            onClick={() => navigate("/admin/productos")}
+            onClick={() => navigate(ROUTES.ADMIN_PRODUCTS)}
             className="rounded border border-stone-300 px-5 py-2.5 text-stone-700 hover:bg-stone-100"
           >
             Cancelar
