@@ -36,57 +36,57 @@ export class ProductController {
   };
 
   create = async (req, res, next) => {
-      try {
-        const product = await this.productService.create(req.body);
+    try {
+      const product = await this.productService.create(req.body);
 
-        return res.status(201).json({
-          success: true,
-          message: "Producto creado exitosamente",
-          data: product,
+      return res.status(201).json({
+        success: true,
+        message: "Producto creado exitosamente",
+        data: product,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  update = async (req, res, next) => {
+    try {
+      const product = await this.productService.update(req.params.id, req.body);
+
+      if (!product) {
+        return res.status(404).json({
+          success: false,
+          error: "Producto no encontrado",
         });
-      } catch (error) {
-        next(error);
       }
-    };
 
-    update = async (req, res, next) => {
-      try {
-        const product = await this.productService.update(req.params.id, req.body);
+      return res.status(200).json({
+        success: true,
+        message: "Producto actualizado exitosamente",
+        data: product,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 
-        if (!product) {
-          return res.status(404).json({
-            success: false,
-            error: "Producto no encontrado",
-          });
-        }
+  remove = async (req, res, next) => {
+    try {
+      const deleted = await this.productService.remove(req.params.id);
 
-        return res.status(200).json({
-          success: true,
-          message: "Producto actualizado exitosamente",
-          data: product,
+      if (!deleted) {
+        return res.status(404).json({
+          success: false,
+          error: "Producto no encontrado",
         });
-      } catch (error) {
-        next(error);
       }
-    };
 
-    remove = async (req, res, next) => {
-      try {
-        const deleted = await this.productService.remove(req.params.id);
-
-        if (!deleted) {
-          return res.status(404).json({
-            success: false,
-            error: "Producto no encontrado",
-          });
-        }
-
-        return res.status(200).json({
-          success: true,
-          message: "Producto eliminado exitosamente",
-        });
-      } catch (error) {
-        next(error);
-      }
-    };
+      return res.status(200).json({
+        success: true,
+        message: "Producto eliminado exitosamente",
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }

@@ -1,24 +1,19 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { ROUTES } from "../routes/paths";
-import { API_URL } from "../api/config/config";
 import { formatPrice } from "../utils/formatPrice";
+import { getProducts } from "../services/products.api";
 
 const MAX_DESTACADOS = 3;
 
-const fetchProducts = async () => {
-  const response = await fetch(`${API_URL}/productos`);
-  if (!response.ok) {
-    throw new Error("No se pudieron cargar los productos");
-  }
-  const data = await response.json();
-  return Array.isArray(data) ? data : (data.data ?? []);
-};
-
 export default function Home() {
+  // Misma queryKey que el catálogo sin filtro: comparten la caché
   const { data: products = [], isLoading, isError } = useQuery({
-    queryKey: ["productos"],
-    queryFn: fetchProducts,
+    queryKey: ["products", null],
+    queryFn: async () => {
+      const response = await getProducts();
+      return response.data ?? [];
+    },
   });
 
   // Productos marcados como destacados; si todavía no hay ninguno, los primeros del catálogo

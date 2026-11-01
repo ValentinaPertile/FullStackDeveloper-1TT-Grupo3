@@ -148,13 +148,13 @@ La aplicación integra navegación dinámica con React Router, gestión de estad
 | Método | Endpoint | Descripción | Acceso |
 | :--- | :--- | :--- | :--- |
 | `POST` | `/api/contact` | Envía y almacena un mensaje de contacto (validado con Zod). | Público |
-| `GET` | `/api/contact` | Lista todas las consultas recibidas en orden cronológico. | Autenticado |
+| `GET` | `/api/contact` | Lista todas las consultas recibidas en orden cronológico. | Solo ADMIN |
 
 ### 4. Órdenes y Checkout (`/api/orders`)
 | Método | Endpoint | Descripción | Acceso |
 | :--- | :--- | :--- | :--- |
 | `POST` | `/api/orders` | Crea una nueva orden de compra desde el carrito (soporta usuarios e invitados). | Público |
-| `GET` | `/api/orders` | Lista las órdenes de compra asociadas. | Autenticado |
+| `GET` | `/api/orders` | Lista todas las órdenes de compra. | Solo ADMIN |
 
 ### 5. Roles y permisos
 | Rol | Permisos |
