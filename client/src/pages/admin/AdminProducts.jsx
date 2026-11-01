@@ -3,14 +3,16 @@ import { Link } from "react-router-dom";
 import { ROUTES } from "../../routes/paths";
 import { formatPrice } from "../../utils/formatPrice";
 import { interceptor } from "../../api/interceptor/axios-interceptor";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+import { API_URL } from "../../api/config/config";
 
 async function deleteProduct(id) {
   try {
     await interceptor.delete(`/productos/${id}`);
   } catch (err) {
-    throw new Error(err.response?.data?.error || "No se pudo borrar el producto");
+    // El interceptor ya normaliza el error a { status, success, error }
+    throw new Error(err?.error || "No se pudo borrar el producto", {
+      cause: err,
+    });
   }
 }
 
@@ -29,7 +31,7 @@ export default function AdminProducts() {
         }
         const data = await response.json();
         const list = Array.isArray(data) ? data : (data.data ?? []);
-        // El borrado es lógico (active = false): no mostramos los dados de baja
+        // Por las dudas, no mostramos productos inactivos (active = false)
         setProducts(list.filter((p) => p.active !== false));
       } catch (err) {
         setError(err.message);
@@ -57,7 +59,7 @@ export default function AdminProducts() {
   };
 
   return (
-    <main className="mx-auto max-w-6xl px-6 py-10 font-inter">
+    <section className="mx-auto max-w-6xl px-6 py-10 font-inter">
       <div className="mb-8 flex items-center justify-between">
         <h1 className="font-display text-4xl">Panel de productos</h1>
         <Link
@@ -131,6 +133,6 @@ export default function AdminProducts() {
           </table>
         </div>
       )}
-    </main>
+    </section>
   );
 }
