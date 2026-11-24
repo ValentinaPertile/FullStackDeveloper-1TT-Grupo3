@@ -4,19 +4,12 @@ import { comparePassword, hashPassword } from "../../../shared/utils/hash.js";
 import { createToken, verifyToken } from "../../../shared/utils/jwt.js";
 
 export class AuthService {
-  async getByEmail(email) {
+  async login(email, password) {
     const user = await User.findOne({ email });
 
-    if (!user) {
-      throw new ErrorResponse("Credenciales incorrectas", 404);
-    }
-    return user;
-  }
-
-  async login(email, password) {
-    const user = await this.getByEmail(email);
-
-    const passwordMatch = user.password
+    // Mismo error (401) si el email no existe o si la contraseña es incorrecta,
+    // para no revelar qué emails están registrados.
+    const passwordMatch = user?.password
       ? await comparePassword(password, user.password)
       : false;
 
@@ -38,6 +31,10 @@ export class AuthService {
 
       if (token) {
         decoded = verifyToken(token);
+
+        if (decoded.typ !== "register" || !decoded.email) {
+          throw new ErrorResponse("Token de registro inválido", 401);
+        }
       } else {
         if (!user.password) {
           throw new ErrorResponse("La contraseña es requerida", 400);
@@ -45,7 +42,9 @@ export class AuthService {
         hashedPassword = await hashPassword(user.password);
       }
 
-      const email = user.email || decoded?.email;
+      // Con Google, el email sale del token firmado y no del formulario:
+      // así nadie puede registrar una cuenta con un email que no es suyo.
+      const email = decoded ? decoded.email : user.email;
 
       if (!email) {
         throw new ErrorResponse("El email es requerido para el registro", 400);
@@ -63,7 +62,7 @@ export class AuthService {
         avatar_url: token ? decoded?.avatar_url : null,
         dni: user.dni,
         phone: user.phone,
-        provider: token ? decoded?.provider || "GOOGLE" : "LOCAL",
+        provider: token ? "GOOGLE" : "LOCAL",
       });
 
       return {

@@ -7,7 +7,7 @@ import { AuthService } from "../services/auth.service.js";
 import { isAuthenticated } from "../../../core/middleware/isAuthenticated.js";
 
 import passport from "../../../core/config/passport.js";
-import { createToken, signIn } from "../../../shared/utils/jwt.js";
+import { createToken, createRegisterToken } from "../../../shared/utils/jwt.js";
 import { sendPopupResponse } from "../../../shared/utils/popup.js";
 import { NODE_ENV } from "../../../core/config/config.js";
 
@@ -49,7 +49,7 @@ router.get("/google/callback", (req, res, next) => {
 
       // 4. Si es usuario nuevo, se dirige a registrarse
       if (isNew) {
-        const registerToken = signIn(payload);
+        const registerToken = createRegisterToken(payload);
 
         return sendPopupResponse(res, {
           type: "OAUTH_REGISTER",
