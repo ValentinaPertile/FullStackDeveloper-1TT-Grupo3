@@ -3,6 +3,10 @@ import { ROUTES } from "../routes/paths";
 import { useEffect } from "react";
 import { OAuth } from "../services/auth.api";
 import { useAuth } from "./useAuth";
+import { API_URL } from "../api/config/config";
+
+// Origen del backend: el popup de Google solo puede venir de ahí
+const API_ORIGIN = new URL(API_URL, window.location.origin).origin;
 
 const getOAuthActions = (navigate, refreshUser) => ({
   OAUTH_SUCCESS: async () => {
@@ -27,6 +31,8 @@ export function useOAuth() {
     const actions = getOAuthActions(navigate, refreshUser);
 
     const onMessage = (event) => {
+      // Ignora mensajes de cualquier otra página (otra pestaña, extensiones, iframes)
+      if (event.origin !== API_ORIGIN) return;
       if (!event.data || typeof event.data !== "object") return;
 
       const type = event.data.type;
