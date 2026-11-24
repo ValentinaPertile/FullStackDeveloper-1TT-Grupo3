@@ -7,7 +7,7 @@ export class OrderController {
 
   create = async (req, res, next) => {
     try {
-      const { items, total_amount, shipping_address, customer } = req.body;
+      const { items, shipping_address, customer } = req.body;
 
       if (!items || !Array.isArray(items) || items.length === 0) {
         return res.status(400).json({
@@ -16,15 +16,9 @@ export class OrderController {
         });
       }
 
+      // Precios y total los calcula el servicio con los datos de la base
       const orderData = {
-        items: items.map((item) => ({
-          product: item._id || item.id,
-          name: item.name || item.nombre,
-          image_url: item.image_url || item.imagen,
-          quantity: Number(item.cantidad || item.quantity || 1),
-          unit_price: Number(item.price || item.precio || 0),
-        })),
-        total_amount: Number(total_amount),
+        items,
         shipping_address: shipping_address || {
           address: "Retiro en Taller Hermanos Jota",
           city: "Buenos Aires",
