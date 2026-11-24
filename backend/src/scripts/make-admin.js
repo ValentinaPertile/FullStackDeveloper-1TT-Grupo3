@@ -24,5 +24,5 @@ if (!user) {
 }
 
 console.log(`✅ ${user.email} ahora tiene rol ADMIN.`);
-console.log("⚠️  Cerrá sesión y volvé a entrar para que el JWT tome el rol nuevo.");
+console.log("El cambio se aplica en el próximo pedido, sin volver a iniciar sesión.");
 process.exit(0);

@@ -3,6 +3,7 @@ import { verifyToken } from "../../shared/utils/jwt.js";
 import { ErrorResponse } from "../errors/error-handler.js";
 
 import { NODE_ENV } from "../config/config.js";
+import User from "../models/User.js";
 
 export const isAuthenticated = async (req, res, next) => {
   try {
@@ -27,9 +28,18 @@ export const isAuthenticated = async (req, res, next) => {
       throw new ErrorResponse("Token invalido", 401);
     }
 
+    // El rol y el estado se leen de la base y no del token: si un admin pierde
+    // el rol o se desactiva una cuenta, el cambio aplica al instante y no
+    // recién cuando vence el JWT.
+    const user = await User.findById(payload.sub).select("role active").lean();
+
+    if (!user || !user.active) {
+      throw new ErrorResponse("Usuario inexistente o inactivo", 401);
+    }
+
     req.user = {
       id: payload.sub,
-      role: payload.rol === "a" ? "ADMIN" : "USER",
+      role: user.role,
     };
 
     next();
