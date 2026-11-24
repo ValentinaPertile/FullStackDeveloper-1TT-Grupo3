@@ -7,7 +7,7 @@ import { AuthService } from "../services/auth.service.js";
 import { isAuthenticated } from "../../../core/middleware/isAuthenticated.js";
 import { rateLimit } from "../../../core/middleware/rateLimit.js";
 
-import passport from "../../../core/config/passport.js";
+import passport, { isGoogleEnabled } from "../../../core/config/passport.js";
 import { createToken, createRegisterToken } from "../../../shared/utils/jwt.js";
 import { sendPopupResponse } from "../../../shared/utils/popup.js";
 import { NODE_ENV } from "../../../core/config/config.js";
@@ -24,7 +24,15 @@ const authLimiter = rateLimit({
 const service = new AuthService();
 const controller = new AuthController(service);
 
-// OAuth Google
+// OAuth Google (solo si hay credenciales configuradas)
+router.use("/google", (req, res, next) => {
+  if (isGoogleEnabled) return next();
+  return sendPopupResponse(res, {
+    type: "OAUTH_ERROR",
+    error: "El login con Google no está disponible",
+  });
+});
+
 router.get(
   "/google",
   passport.authenticate("google", {
