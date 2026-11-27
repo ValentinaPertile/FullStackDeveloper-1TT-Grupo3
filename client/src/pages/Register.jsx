@@ -161,7 +161,7 @@ export default function Register() {
                     type="password"
                     name="password"
                     required
-                    minLength={4}
+                    minLength={8}
                     value={user.password}
                     onChange={(e) => handleChanges(e)}
                     placeholder="••••••••"
@@ -180,7 +180,7 @@ export default function Register() {
                     type="password"
                     name="confirmPassword"
                     required
-                    minLength={4}
+                    minLength={8}
                     value={user.confirmPassword}
                     onChange={(e) => handleChanges(e)}
                     placeholder="••••••••"

@@ -10,7 +10,17 @@ import {
   GOOGLE_CLIENT_SECRET,
 } from "./config.js";
 
-passport.use(
+// Google es opcional: sin credenciales el servidor arranca igual
+// y solo queda disponible el login con email y contraseña.
+export const isGoogleEnabled = Boolean(
+  GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET && GOOGLE_CALLBACK_URL,
+);
+
+if (!isGoogleEnabled) {
+  console.warn("Google OAuth desactivado: faltan GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET o GOOGLE_CALLBACK_URL");
+}
+
+if (isGoogleEnabled) passport.use(
   new GoogleStrategy(
     {
       clientID: GOOGLE_CLIENT_ID,

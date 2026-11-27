@@ -5,18 +5,34 @@ import { loginSchema, registerSchema } from "../types/auth.schema.js";
 import { validate } from "../../../core/middleware/validation.js";
 import { AuthService } from "../services/auth.service.js";
 import { isAuthenticated } from "../../../core/middleware/isAuthenticated.js";
+import { rateLimit } from "../../../core/middleware/rateLimit.js";
 
-import passport from "../../../core/config/passport.js";
-import { createToken, signIn } from "../../../shared/utils/jwt.js";
+import passport, { isGoogleEnabled } from "../../../core/config/passport.js";
+import { createToken, createRegisterToken } from "../../../shared/utils/jwt.js";
 import { sendPopupResponse } from "../../../shared/utils/popup.js";
 import { NODE_ENV } from "../../../core/config/config.js";
 
 const router = Router();
 
+// Frena ataques de fuerza bruta: 10 intentos cada 15 minutos por IP
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: "Demasiados intentos. Esperá unos minutos y volvé a probar.",
+});
+
 const service = new AuthService();
 const controller = new AuthController(service);
 
-// OAuth Google
+// OAuth Google (solo si hay credenciales configuradas)
+router.use("/google", (req, res, next) => {
+  if (isGoogleEnabled) return next();
+  return sendPopupResponse(res, {
+    type: "OAUTH_ERROR",
+    error: "El login con Google no está disponible",
+  });
+});
+
 router.get(
   "/google",
   passport.authenticate("google", {
@@ -49,7 +65,7 @@ router.get("/google/callback", (req, res, next) => {
 
       // 4. Si es usuario nuevo, se dirige a registrarse
       if (isNew) {
-        const registerToken = signIn(payload);
+        const registerToken = createRegisterToken(payload);
 
         return sendPopupResponse(res, {
           type: "OAUTH_REGISTER",
@@ -83,8 +99,8 @@ router.get("/google/callback", (req, res, next) => {
 });
 
 // Auth local y sesión
-router.post("/login", validate(loginSchema), controller.login);
-router.post("/register", validate(registerSchema), controller.register);
+router.post("/login", authLimiter, validate(loginSchema), controller.login);
+router.post("/register", authLimiter, validate(registerSchema), controller.register);
 
 router.get("/me", isAuthenticated, controller.me);
 

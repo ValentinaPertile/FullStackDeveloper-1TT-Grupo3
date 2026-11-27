@@ -168,7 +168,7 @@ Para promover un usuario a administrador:
     cd backend
     npm run make-admin -- email@dominio.com
   ```
-Luego cerrar sesión y volver a iniciar, para que el JWT incluya el rol nuevo.
+El rol se lee de la base en cada pedido, así que el cambio aplica al instante, sin volver a iniciar sesión.
 
 ---
 

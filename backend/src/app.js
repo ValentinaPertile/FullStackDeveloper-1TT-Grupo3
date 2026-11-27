@@ -12,8 +12,28 @@ import passport from "passport";
 import "./core/config/passport.js";
 
 
+// Sin estas variables el servidor no puede firmar sesiones ni guardar datos
+for (const name of ["MONGODB_URI", "JWT_SECRET"]) {
+  if (!process.env[name]) {
+    console.error(`Falta la variable de entorno ${name}`);
+    process.exit(1);
+  }
+}
+
 // Inicialización de aplicación
 const app = express();
+
+app.disable("x-powered-by"); // No revelar que el servidor usa Express
+
+// Cabeceras de seguridad básicas
+app.use((req, res, next) => {
+  res.set({
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Referrer-Policy": "no-referrer",
+  });
+  next();
+});
 
 app.set("trust proxy", 1); // Confía en el proxy (Vercel, Nginx, etc.)
 
@@ -35,7 +55,7 @@ app.use(
   }),
 );
 
-app.use(express.json());
+app.use(express.json({ limit: "100kb" }));
 
 await connectDB();
 
